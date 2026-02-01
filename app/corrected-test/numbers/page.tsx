@@ -202,26 +202,24 @@ export default function CorrectedTestNumbersPage() {
 
   if (testNumbers.length === 0) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-300 p-8 flex items-center justify-center">
-        <div className="text-white text-2xl">Loading test...</div>
+      <main className="min-h-screen bg-warm-gradient p-8 flex items-center justify-center">
+        <div className="text-slate-600 text-2xl">Loading test...</div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-yellow-400 via-orange-300 to-red-400 p-8 relative">
+    <main className="min-h-screen bg-warm-gradient p-8 relative">
       {/* Feedback Overlay */}
       {showFeedback && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-          <div className="relative">
-            <div className={`relative rounded-full p-8 shadow-2xl animate-bounce ${isCorrect ? 'bg-green-500' : 'bg-red-500'}`}>
-              <div className="text-center">
-                <h2 className="text-6xl font-bold text-white drop-shadow-lg">
-                  {feedbackMessage}
-                </h2>
-                <div className="text-4xl mt-4">
-                  {isCorrect ? '✓' : '✗'}
-                </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className={`rounded-2xl p-8 shadow-2xl animate-bounce ${isCorrect ? 'bg-green-500' : 'bg-red-500'}`}>
+            <div className="text-center">
+              <h2 className="text-6xl font-bold text-white">
+                {feedbackMessage}
+              </h2>
+              <div className="text-4xl mt-4">
+                {isCorrect ? '✓' : '✗'}
               </div>
             </div>
           </div>
@@ -229,19 +227,15 @@ export default function CorrectedTestNumbersPage() {
       )}
 
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <Link href="/results">
-            <button className="px-6 py-3 bg-white text-gray-700 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-              ← Back to Results
-            </button>
-          </Link>
-          <h1 className="text-5xl font-bold text-white drop-shadow-lg">Numbers Corrected Test</h1>
+        <div className="bg-amber-500 rounded-2xl shadow-lg p-4 mb-6 flex justify-between items-center">
+          <Link href="/results"><button className="px-5 py-2.5 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-colors">← Back to Results</button></Link>
+          <h1 className="text-3xl font-bold text-white">Numbers Corrected Test</h1>
           <div className="w-32"></div>
         </div>
 
-        <div className="bg-orange-100 rounded-xl shadow-xl p-4 mb-6 border-4 border-orange-400">
-          <p className="text-center text-orange-800 font-bold text-xl">
-            🔢 Practice makes perfect! Let's master these numbers!
+        <div className="bg-amber-50 rounded-2xl shadow-sm p-4 mb-6 border border-amber-200">
+          <p className="text-center text-amber-800 font-bold text-xl">
+            Practice makes perfect! Let's master these numbers!
           </p>
         </div>
 
@@ -249,11 +243,11 @@ export default function CorrectedTestNumbersPage() {
           <div className="flex justify-between items-center">
             <div className="text-center flex-1">
               <p className="text-gray-600 text-lg mb-1">Current Number</p>
-              <p className="text-8xl font-bold text-orange-600">{currentNumber}</p>
+              <p className="text-8xl font-bold text-amber-600">{currentNumber}</p>
             </div>
             <div className="text-center flex-1">
               <p className="text-gray-600 text-lg mb-1">Progress</p>
-              <p className="text-4xl font-bold text-purple-600">
+              <p className="text-4xl font-bold text-slate-600">
                 {currentIndex + 1} / {testNumbers.length}
               </p>
             </div>
@@ -290,14 +284,14 @@ export default function CorrectedTestNumbersPage() {
 
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              Write the number: <span className="text-orange-600">{currentNumber}</span>
+              Write the number: <span className="text-amber-600">{currentNumber}</span>
             </h2>
             {modelError ? (
               <p className="text-red-600">{modelError}</p>
             ) : modelReady ? (
               <p className="text-gray-600">Take your time and write carefully!</p>
             ) : (
-              <p className="text-orange-600">Loading AI model...</p>
+              <p className="text-amber-600">Loading AI model...</p>
             )}
           </div>
 
@@ -330,7 +324,7 @@ export default function CorrectedTestNumbersPage() {
             <button
               onClick={handleSubmit}
               disabled={!hasDrawn || isProcessing || !modelReady || !!modelError || showFeedback}
-              className="px-12 py-4 bg-orange-500 text-white rounded-lg font-bold text-2xl hover:bg-orange-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
+              className="px-12 py-4 bg-amber-500 text-white rounded-lg font-bold text-2xl hover:bg-amber-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
             >
               {isProcessing ? 'AI Processing...' : 'Submit Answer'}
             </button>
@@ -338,21 +332,10 @@ export default function CorrectedTestNumbersPage() {
 
           {isProcessing && (
             <div className="text-center mt-6">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-orange-600"></div>
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-amber-600"></div>
               <p className="text-gray-600 mt-2">Checking your answer...</p>
             </div>
           )}
-        </div>
-
-        <div className="mt-8 bg-white/80 rounded-xl p-6">
-          <h3 className="text-2xl font-bold text-gray-800 mb-3">Corrected Test Info:</h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 text-lg">
-            <li>Focus on the numbers you got wrong</li>
-            <li>Each answer shows "Correct!" or "Wrong!" feedback</li>
-            <li>Keep practicing until you master all numbers</li>
-            <li>If you make mistakes again, you'll retake those numbers</li>
-            <li>Once you get all correct, you'll complete the learning cycle!</li>
-          </ul>
         </div>
       </div>
 

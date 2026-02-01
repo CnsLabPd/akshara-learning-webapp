@@ -12,6 +12,7 @@ import { useKeyboardDrawing } from '@/hooks/useKeyboardDrawing';
 export default function CorrectedTestPage() {
   const router = useRouter();
   const [testLetters, setTestLetters] = useState<string[]>([]);
+  const [letterType, setLetterType] = useState<'capital' | 'small'>('capital');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [wrongAnswers, setWrongAnswers] = useState<string[]>([]);
@@ -39,6 +40,12 @@ export default function CorrectedTestPage() {
       setTestLetters(JSON.parse(storedLetters));
     } else {
       router.push('/');
+    }
+
+    // Read letterType from localStorage (defaults to 'capital' for backward compatibility)
+    const storedLetterType = localStorage.getItem('correctedTestLetterType');
+    if (storedLetterType === 'small' || storedLetterType === 'capital') {
+      setLetterType(storedLetterType);
     }
 
     const initModel = async () => {
@@ -120,10 +127,15 @@ export default function CorrectedTestPage() {
 
       // Use strict educational character matching for corrected test mode
       const hasGoodConfidence = result.confidence >= characterRecognizer.getConfidenceThreshold(result.letter);
-      const matchResult = isCharacterMatchStrict(result.letter, currentLetter, 'capital');
+      const matchResult = isCharacterMatchStrict(result.letter, currentLetter, letterType);
 
-      if (matchResult.isCorrect && hasGoodConfidence) {
-        // Only count EXACT capital letter matches as correct in corrected test
+      // Special case for 'c' and 'f' in small alphabets corrected test: accept both upper and lower case
+      const isSpecialCaseCorrect = letterType === 'small' && (currentLetter === 'c' || currentLetter === 'f') && 
+                                  (result.letter === currentLetter || result.letter === currentLetter.toUpperCase()) &&
+                                  hasGoodConfidence;
+
+      if ((matchResult.isCorrect && hasGoodConfidence) || isSpecialCaseCorrect) {
+        // Count exact letter matches (and special cases for c/f in small mode) as correct in corrected test
         setScore(score + 1);
         setWrongCaseDetected(false);
         setShowCelebration(true);
@@ -141,16 +153,37 @@ export default function CorrectedTestPage() {
             canvasRef.current?.clear();
             setIsProcessing(false);
           } else {
-            // Corrected test complete
-            const results = {
-              score: score + 1,
-              total: testLetters.length,
-              wrongAnswers: [],
-              isCorrectedTest: true,
-              allMastered: true,
-              type: 'writing' as const,
-            };
-            localStorage.setItem('testResults', JSON.stringify(results));
+            // Corrected test complete - user got the last letter correct
+            const finalScore = score + 1;
+            
+            // Check if user has any wrong answers from this corrected test session
+            if (wrongAnswers.length === 0) {
+              // Perfect! User got ALL letters correct - truly mastered
+              const results = {
+                score: finalScore,
+                total: testLetters.length,
+                wrongAnswers: [],
+                isCorrectedTest: true,
+                allMastered: true, // TRUE mastery - zero wrong answers
+                type: 'writing' as const,
+              };
+              localStorage.setItem('testResults', JSON.stringify(results));
+              // Clear the corrected test letters since they're mastered
+              localStorage.removeItem('correctedTestLetters');
+            } else {
+              // User got some letters wrong during this session - need another cycle
+              const results = {
+                score: finalScore,
+                total: testLetters.length,
+                wrongAnswers: wrongAnswers, // Keep track of wrong answers
+                isCorrectedTest: true,
+                allMastered: false, // Not mastered yet - has wrong answers
+                type: 'writing' as const,
+              };
+              localStorage.setItem('testResults', JSON.stringify(results));
+              // Set up next corrected test with wrong answers
+              localStorage.setItem('correctedTestLetters', JSON.stringify(wrongAnswers));
+            }
             router.push('/results');
           }
         }, 2500);
@@ -174,7 +207,7 @@ export default function CorrectedTestPage() {
             setIsProcessing(false);
           }, 3000);
         } else {
-          // Corrected test complete
+          // Corrected test complete - user got the last letter wrong
           setTimeout(() => {
             setShowIncorrect(false);
             const finalWrongAnswers = [...wrongAnswers, currentLetter];
@@ -183,9 +216,11 @@ export default function CorrectedTestPage() {
               total: testLetters.length,
               wrongAnswers: finalWrongAnswers,
               isCorrectedTest: true,
+              allMastered: false, // Definitely not mastered - has wrong answers
               type: 'writing' as const,
             };
             localStorage.setItem('testResults', JSON.stringify(results));
+            // Set up next corrected test cycle with wrong answers
             localStorage.setItem('correctedTestLetters', JSON.stringify(finalWrongAnswers));
             router.push('/results');
           }, 3000);
@@ -199,142 +234,61 @@ export default function CorrectedTestPage() {
 
   if (testLetters.length === 0) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-300 p-8 flex items-center justify-center">
-        <div className="text-white text-2xl">Loading test...</div>
+      <main className="min-h-screen bg-warm-gradient p-8 flex items-center justify-center">
+        <div className="text-slate-600 text-2xl">Loading test...</div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-yellow-400 via-orange-300 to-red-400 p-8 relative">
+    <main className="min-h-screen bg-warm-gradient p-8 relative">
       {/* Celebration Overlay */}
       {showCelebration && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-          <div className="relative">
-            {/* Confetti Effect */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              {[...Array(20)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute w-3 h-3 rounded-full animate-ping"
-                  style={{
-                    backgroundColor: ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'][i % 6],
-                    animationDelay: `${i * 0.1}s`,
-                    animationDuration: '1s',
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Green Tick Mark */}
-            <div className="relative bg-white rounded-full p-8 shadow-2xl animate-bounce">
-              <svg
-                className="w-48 h-48 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                style={{
-                  animation: 'checkmark 0.5s ease-in-out',
-                }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
-                  d="M5 13l4 4L19 7"
-                  style={{
-                    strokeDasharray: 100,
-                    strokeDashoffset: 100,
-                    animation: 'draw 0.5s ease-in-out forwards',
-                  }}
-                />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="text-center">
+            <div className="bg-white rounded-full p-8 shadow-2xl mb-6 inline-block">
+              <svg className="w-32 h-32 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" style={{ strokeDasharray: 100, strokeDashoffset: 100, animation: 'draw 0.5s ease-in-out forwards' }} />
               </svg>
             </div>
-
-            {/* Success Messages */}
-            <div className="text-center mt-6 space-y-3">
-              <h2 className="text-6xl font-bold text-white drop-shadow-lg animate-pulse">
-                Excellent! 🎉
-              </h2>
-              <p className="text-3xl text-yellow-300 font-semibold drop-shadow">
-                Perfect Writing!
-              </p>
-            </div>
+            <h2 className="text-5xl font-bold text-white mb-2">Excellent!</h2>
+            <p className="text-2xl text-emerald-300 font-semibold">Perfect Writing!</p>
           </div>
         </div>
       )}
 
       {/* Incorrect Answer Overlay */}
       {showIncorrect && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-          <div className="relative">
-            {/* Red X Mark */}
-            <div className="relative bg-white rounded-full p-8 shadow-2xl animate-bounce">
-              <svg
-                className="w-48 h-48 text-red-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                style={{
-                  animation: 'xmark 0.5s ease-in-out',
-                }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
-                  d="M6 18L18 6M6 6l12 12"
-                  style={{
-                    strokeDasharray: 100,
-                    strokeDashoffset: 100,
-                    animation: 'draw 0.5s ease-in-out forwards',
-                  }}
-                />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="text-center">
+            <div className="bg-white rounded-full p-8 shadow-2xl mb-6 inline-block">
+              <svg className="w-32 h-32 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" style={{ strokeDasharray: 100, strokeDashoffset: 100, animation: 'draw 0.5s ease-in-out forwards' }} />
               </svg>
             </div>
-
-            {/* Error Messages */}
-            <div className="text-center mt-6 space-y-3">
-              <h2 className="text-6xl font-bold text-white drop-shadow-lg animate-pulse">
-                {wrongCaseDetected ? 'Wrong Case! ⚠️' : 'Incorrect! ❌'}
-              </h2>
-              <p className="text-3xl text-red-300 font-semibold drop-shadow">
-                {wrongCaseDetected ? 'Remember: Write CAPITAL letters!' : 'Keep practicing!'}
-              </p>
-              {recognizedOutput && (
-                <p className="text-xl text-yellow-300 drop-shadow">
-                  AI recognized: {recognizedOutput}
-                </p>
-              )}
-            </div>
+            <h2 className="text-5xl font-bold text-white mb-2">
+              {wrongCaseDetected ? 'Wrong Case!' : 'Incorrect!'}
+            </h2>
+            <p className="text-2xl text-rose-300 font-semibold">
+              {wrongCaseDetected ? 'Remember: Write CAPITAL letters!' : 'Keep practicing!'}
+            </p>
+            {recognizedOutput && (
+              <p className="text-xl text-amber-300 mt-2">AI recognized: {recognizedOutput}</p>
+            )}
           </div>
         </div>
       )}
 
-      <style jsx>{`
-        @keyframes draw {
-          to {
-            stroke-dashoffset: 0;
-          }
-        }
-      `}</style>
-
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <Link href="/results">
-            <button className="px-6 py-3 bg-white text-gray-700 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-              ← Back to Results
-            </button>
-          </Link>
-          <h1 className="text-5xl font-bold text-white drop-shadow-lg">Corrected Test</h1>
+        <div className="bg-amber-500 rounded-2xl shadow-lg p-4 mb-6 flex justify-between items-center">
+          <Link href="/results"><button className="px-5 py-2.5 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-colors">← Back to Results</button></Link>
+          <h1 className="text-3xl font-bold text-white">Corrected Test</h1>
           <div className="w-32"></div>
         </div>
 
-        <div className="bg-orange-100 rounded-xl shadow-xl p-4 mb-6 border-4 border-orange-400">
-          <p className="text-center text-orange-800 font-bold text-xl">
-            📚 Practice makes perfect! Let&apos;s master these letters!
+        <div className="bg-amber-50 rounded-2xl shadow-sm p-4 mb-6 border border-amber-200">
+          <p className="text-center text-amber-800 font-bold text-lg">
+            Practice makes perfect! Let&apos;s master these letters!
           </p>
         </div>
 
@@ -342,11 +296,11 @@ export default function CorrectedTestPage() {
           <div className="flex justify-between items-center">
             <div className="text-center flex-1">
               <p className="text-gray-600 text-lg mb-1">Current Letter</p>
-              <p className="text-8xl font-bold text-orange-600">{currentLetter}</p>
+              <p className="text-8xl font-bold text-amber-600">{currentLetter}</p>
             </div>
             <div className="text-center flex-1">
               <p className="text-gray-600 text-lg mb-1">Progress</p>
-              <p className="text-4xl font-bold text-purple-600">
+              <p className="text-4xl font-bold text-slate-600">
                 {currentIndex + 1} / {testLetters.length}
               </p>
             </div>
@@ -383,14 +337,14 @@ export default function CorrectedTestPage() {
 
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              Write the letter: <span className="text-orange-600">{currentLetter}</span>
+              Write the letter: <span className="text-amber-600">{currentLetter}</span>
             </h2>
             {modelError ? (
               <p className="text-red-600">{modelError}</p>
             ) : modelReady ? (
               <p className="text-gray-600">Take your time and write carefully!</p>
             ) : (
-              <p className="text-orange-600">Loading AI model...</p>
+              <p className="text-amber-600">Loading AI model...</p>
             )}
           </div>
 
@@ -423,7 +377,7 @@ export default function CorrectedTestPage() {
             <button
               onClick={handleSubmit}
               disabled={!hasDrawn || isProcessing || !modelReady || !!modelError}
-              className="px-12 py-4 bg-orange-500 text-white rounded-lg font-bold text-2xl hover:bg-orange-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
+              className="px-12 py-4 bg-amber-500 text-white rounded-lg font-bold text-2xl hover:bg-amber-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
             >
               {isProcessing ? 'AI Processing...' : 'Submit Answer'}
             </button>
@@ -438,7 +392,7 @@ export default function CorrectedTestPage() {
                 &quot;{recognizedOutput}&quot;
               </p>
               <p className="text-sm text-gray-600 mt-2">
-                Expected: <span className="font-semibold text-orange-600">{currentLetter}</span>
+                Expected: <span className="font-semibold text-amber-600">{currentLetter}</span>
               </p>
             </div>
           )}
@@ -469,21 +423,12 @@ export default function CorrectedTestPage() {
 
           {isProcessing && (
             <div className="text-center mt-6">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-orange-600"></div>
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-amber-600"></div>
               <p className="text-gray-600 mt-2">Checking your answer...</p>
             </div>
           )}
         </div>
 
-        <div className="mt-8 bg-white/80 rounded-xl p-6">
-          {/* <h3 className="text-2xl font-bold text-gray-800 mb-3">Corrected Test Info:</h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 text-lg">
-            <li>Focus on the letters you got wrong</li>
-            <li>Keep practicing until you master all letters</li>
-            <li>If you make mistakes again, you&apos;ll retake those letters</li>
-            <li>Once you get all correct, you&apos;ll complete the learning cycle!</li>
-          </ul> */}
-        </div>
       </div>
 
       {/* Keyboard Drawing Tutorial Modal */}

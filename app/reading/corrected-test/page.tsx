@@ -410,21 +410,22 @@ export default function SpeakingCorrectedTestPage() {
 
   if (!isSupported) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-orange-400 via-red-300 to-pink-400 p-8">
+      <main className="min-h-screen bg-warm-gradient p-8">
         <div className="max-w-4xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <Link href="/">
-              <button className="px-6 py-3 bg-white text-gray-700 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-                ← Home
-              </button>
-            </Link>
+          <div className="bg-amber-500 rounded-2xl shadow-lg p-4 mb-4 flex justify-between items-center">
+            <Link href="/results"><button className="px-5 py-2.5 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-colors">← Results</button></Link>
+            <h1 className="text-3xl font-bold text-white">Corrected Speaking Test</h1>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></span>
+              <span className="text-white text-sm font-semibold">AI Active</span>
+            </div>
           </div>
           <div className="bg-white rounded-xl shadow-2xl p-12 text-center">
             <div className="text-6xl mb-4">⚠️</div>
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
               Speech Recognition Not Supported
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-slate-600">
               Your browser doesn&apos;t support speech recognition. Please try using Google Chrome or Microsoft Edge.
             </p>
           </div>
@@ -435,30 +436,32 @@ export default function SpeakingCorrectedTestPage() {
 
   if (testLetters.length === 0) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-orange-400 via-red-300 to-pink-400 p-8 flex items-center justify-center">
-        <div className="text-white text-2xl">Loading corrected test...</div>
+      <main className="min-h-screen bg-warm-gradient p-8 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-amber-500 border-t-transparent"></div>
+          <div className="text-slate-600 text-2xl">Loading corrected test...</div>
+        </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-orange-400 via-red-300 to-pink-400 p-8 relative">
+    <main className="min-h-screen bg-warm-gradient p-8 relative">
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <Link href="/">
-            <button className="px-6 py-3 bg-white text-gray-700 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-              ← Home
-            </button>
-          </Link>
-          <h1 className="text-5xl font-bold text-white drop-shadow-lg">Corrected Speaking Test</h1>
-          <div className="w-24"></div>
+        <div className="bg-amber-500 rounded-2xl shadow-lg p-4 mb-4 flex justify-between items-center">
+          <Link href="/results"><button className="px-5 py-2.5 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-colors">← Results</button></Link>
+          <h1 className="text-3xl font-bold text-white">Corrected Speaking Test</h1>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></span>
+            <span className="text-white text-sm font-semibold">AI Active</span>
+          </div>
         </div>
 
         {/* Compact Progress Bar */}
         <div className="bg-white rounded-lg shadow-lg p-3 mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-sm text-gray-600">Progress:</span>
-            <span className="text-lg font-bold text-orange-600">
+            <span className="text-lg font-bold text-violet-600">
               {currentIndex + 1} / {testLetters.length}
             </span>
           </div>
@@ -471,10 +474,10 @@ export default function SpeakingCorrectedTestPage() {
         <div className="bg-white rounded-xl shadow-2xl p-6">
           {/* Visual Letter Display with Association */}
           <div className="text-center mb-6">
-            <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 mb-4 border-2 border-orange-200">
+            <div className="bg-slate-50 rounded-xl p-6 mb-4 border-2 border-slate-200">
               <div className="flex items-center justify-center gap-6">
                 {/* Large Letter */}
-                <div className="text-9xl font-bold text-orange-600">{currentLetter}</div>
+                <div className="text-9xl font-bold text-violet-600">{currentLetter}</div>
 
                 {/* Visual Association */}
                 <div className="text-center">
@@ -487,8 +490,8 @@ export default function SpeakingCorrectedTestPage() {
             </div>
 
             {/* Instructions */}
-            <div className="bg-red-50 rounded-lg p-3 border-2 border-red-200">
-              <p className="text-sm text-red-700 font-semibold">
+            <div className="bg-violet-50 rounded-lg p-3 border-2 border-violet-200">
+              <p className="text-sm text-violet-700 font-semibold">
                 🎯 Say <strong>&quot;{getLetterPronunciation(currentLetter)}&quot;</strong> or <strong>&quot;{currentLetter} for {getLetterAssociation(currentLetter).word}&quot;</strong>, then pause. Auto-submits after 2 seconds!
               </p>
             </div>
@@ -499,7 +502,7 @@ export default function SpeakingCorrectedTestPage() {
             <button
               onClick={playLetterSound}
               disabled={isListening || isProcessing}
-              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-bold text-lg hover:from-blue-600 hover:to-cyan-600 transition-all transform hover:scale-105 shadow-md flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-3 bg-slate-200 text-slate-700 rounded-lg font-bold text-lg hover:bg-slate-300 transition-all transform hover:scale-105 shadow-md flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="text-2xl">🔊</span>
               <span>Listen</span>
@@ -511,7 +514,7 @@ export default function SpeakingCorrectedTestPage() {
               className={`px-6 py-3 ${
                 isListening
                   ? 'bg-red-500 animate-pulse'
-                  : 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600'
+                  : 'bg-violet-600 hover:bg-violet-700'
               } text-white rounded-lg font-bold text-lg transition-all transform hover:scale-105 shadow-md flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-75`}
             >
               <span className="text-2xl">🎤</span>
@@ -523,17 +526,17 @@ export default function SpeakingCorrectedTestPage() {
 
           {/* Show what user said */}
           {currentTranscript && (
-            <div className="text-center mb-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-2 border-blue-200">
-              <p className="text-gray-600 text-xs mb-1 font-semibold">You said:</p>
-              <p className="text-2xl font-bold text-blue-600">{currentTranscript}</p>
+            <div className="text-center mb-4 p-4 bg-slate-50 rounded-lg border-2 border-slate-200">
+              <p className="text-slate-600 text-xs mb-1 font-semibold">You said:</p>
+              <p className="text-2xl font-bold text-violet-600">{currentTranscript}</p>
             </div>
           )}
 
           {/* Auto-Processing Indicator */}
           {isProcessing && (
             <div className="text-center mb-4">
-              <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-4 border-orange-600"></div>
-              <p className="text-gray-600 mt-2 text-sm">Auto-checking your answer...</p>
+              <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-amber-500 border-t-transparent"></div>
+              <p className="text-slate-600 mt-2 text-sm">Auto-checking your answer...</p>
             </div>
           )}
 
@@ -551,15 +554,7 @@ export default function SpeakingCorrectedTestPage() {
           )}
         </div>
 
-        Test Info
-        <div className="mt-4 bg-white/90 rounded-lg p-4">
-          <h3 className="text-lg font-bold text-gray-800 mb-2">Corrected Test Info:</h3>
-          <ul className="list-disc list-inside space-y-1 text-gray-700 text-sm">
-            <li>Practice the letters you got wrong</li>
-            <li>Auto-submits after 2 seconds of silence</li>
-            <li>Keep taking corrected tests until you master all letters</li>
-          </ul>
-        </div>
+        
       </div>
     </main>
   );

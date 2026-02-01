@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.980.0",
+    "@aws-sdk/client-dynamodb": "^3.980.0",
+    "@aws-sdk/lib-dynamodb": "^3.980.0",
     "@tensorflow/tfjs": "^4.22.0",
     "gifuct-js": "^2.1.2",
     "next": "15.5.6",

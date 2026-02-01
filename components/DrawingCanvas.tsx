@@ -7,6 +7,8 @@ interface DrawingCanvasProps {
   isEnabled: boolean;
   keyboardDrawingEnabled?: boolean;
   isWKeyPressed?: boolean;
+  width?: number;
+  height?: number;
 }
 
 export interface DrawingCanvasRef {
@@ -18,7 +20,9 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(({
   onDrawingComplete,
   isEnabled,
   keyboardDrawingEnabled = false,
-  isWKeyPressed = false
+  isWKeyPressed = false,
+  width = 400,
+  height = 400
 }, ref) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -35,7 +39,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(({
         
         // Set white stroke for drawing
         ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 20; // Thicker stroke for better recognition
+        ctx.lineWidth = 14; // Doubled stroke width for better visibility
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         setContext(ctx);
@@ -117,9 +121,9 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(({
     <div className="flex flex-col items-center gap-4">
       <canvas
         ref={canvasRef}
-        width={400}
-        height={400}
-        className={`border-4 border-blue-500 rounded-lg bg-black ${getCursorStyle()} touch-none`}
+        width={width}
+        height={height}
+        className={`border-4 border-slate-300 rounded-lg bg-black ${getCursorStyle()} touch-none`}
         onMouseDown={startDrawing}
         onMouseMove={draw}
         onMouseUp={stopDrawing}
@@ -128,13 +132,6 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(({
         onTouchMove={draw}
         onTouchEnd={stopDrawing}
       />
-      <button
-        onClick={clearCanvas}
-        disabled={!isEnabled}
-        className="px-6 py-3 bg-red-500 text-white rounded-lg font-bold text-lg hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-      >
-        Clear
-      </button>
     </div>
   );
 });

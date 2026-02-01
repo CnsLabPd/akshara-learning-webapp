@@ -1,197 +1,299 @@
-# AksharA - Learn English Alphabet Writing
+# AksharA - AI-Powered Alphabet Learning Platform
 
-An interactive web application designed to help children learn to write English alphabets (A-Z) using AI-powered handwriting recognition with comprehensive learning modes.
+An interactive web application designed to help children learn to write and speak English alphabets (A-Z, a-z), numbers (0-9), and more using AI-powered handwriting and speech recognition.
 
 ## Features
 
 ### Core Features
-- **Interactive Drawing Canvas**: Draw letters directly on a responsive canvas using mouse or touch
-- **AI-Powered Recognition**: Uses Tesseract.js OCR to recognize handwritten letters
+- **Interactive Drawing Canvas**: Draw letters on a responsive canvas using mouse or touch
+- **AI-Powered Handwriting Recognition**: Uses Tesseract.js OCR and TensorFlow.js models
+- **Speech Recognition**: Web Speech API for voice-based learning
+- **Text-to-Speech**: Pronunciation guidance for letters and numbers
 - **Multi-Mode Learning**: Practice and Test modes for different learning approaches
 - **Smart Corrected Tests**: Automatic retest system for incorrect answers until mastery
-- **Language Selection**: Choose your preferred language (currently English)
 - **Score Tracking**: Comprehensive scoring system with grades
-- **Child-Friendly UI**: Colorful, engaging interface designed for children
+- **Child-Friendly UI**: Colorful, engaging interface with celebration animations
 - **Mobile Responsive**: Works on desktop, tablet, and mobile devices
+
+### Learning Content
+- **Capital Letters (A-Z)**: Writing and speaking practice
+- **Lowercase Letters (a-z)**: Writing and speaking practice
+- **Numbers (0-9)**: Writing and speaking practice
 
 ### Learning Modes
 
-#### 1. Practice Mode
-- Learn at your own pace
-- Instant feedback on drawings
-- Navigate freely between letters
-- Unlimited attempts per letter
-- No pressure testing
+#### Writing Section
+1. **Practice Mode**: Unlimited attempts, instant feedback, navigate freely
+2. **Test Mode**: Single attempt per character, score tracking
+3. **Corrected Test**: Retake only the characters you got wrong
 
-#### 2. Test Mode
-- Single attempt per letter
-- Submit button for controlled progression
-- Tracks wrong answers
-- Generates corrected tests automatically
-- Complete scoring system
-
-#### 3. Corrected Test Cycle
-- Automatically tests on wrong answers only
-- Repeats until all letters are mastered
-- Progressive learning approach
-- Prevents moving forward until mastery
+#### Reading/Speaking Section
+1. **Practice Mode**: Listen and speak with unlimited attempts
+2. **Test Mode**: Voice recognition assessment
+3. **Learn Mode**: Interactive learning with pronunciation guides
 
 ## Tech Stack
 
-- **Next.js 15** - React framework with App Router
-- **TypeScript** - Type-safe development
-- **Tailwind CSS** - Utility-first CSS framework
-- **Tesseract.js** - OCR engine for handwriting recognition
-- **HTML5 Canvas** - Drawing functionality
-- **Local Storage** - Test results and progress persistence
+### Frontend
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Next.js | 15.5.6 | React framework with App Router |
+| React | 19.1.0 | UI library |
+| TypeScript | 5.x | Type-safe development |
+| Tailwind CSS | 4.x | Utility-first CSS framework |
+| Tesseract.js | 6.0.1 | OCR engine for handwriting recognition |
+| TensorFlow.js | 4.22.0 | ML model inference |
+| gifuct-js | 2.1.2 | GIF animation processing |
+
+### Backend (Optional - for advanced speech features)
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Python | 3.9+ | Backend runtime |
+| FastAPI | 0.109.0 | Web API framework |
+| Uvicorn | 0.27.0 | ASGI server |
+| TensorFlow | 2.15+ | Neural network inference |
+| librosa | 0.10+ | Audio feature extraction |
+
+### Browser APIs
+- **Web Speech API**: Speech recognition and synthesis
+- **HTML5 Canvas API**: Drawing functionality
+- **LocalStorage**: Progress and results persistence
+
+## Requirements
+
+### System Requirements
+- **Node.js**: 18.x or higher
+- **npm**: 9.x or higher (or yarn)
+- **Python**: 3.9+ (optional, for backend features)
+- **RAM**: ~2GB for running both servers
+- **Disk**: ~500MB for dependencies
+
+### Browser Requirements
+- **Recommended**: Google Chrome, Microsoft Edge (best speech recognition support)
+- **Supported**: Firefox, Safari (limited speech features)
 
 ## Getting Started
 
-### Prerequisites
+### Quick Start (Frontend Only)
 
-- Node.js 18+ installed
-- npm or yarn package manager
-
-### Installation
-
-1. Clone the repository:
+1. **Clone the repository**:
 ```bash
 git clone <repository-url>
 cd akshara
 ```
 
-2. Install dependencies:
+2. **Install dependencies**:
 ```bash
 npm install
 ```
 
-3. Run the development server:
+3. **Run the development server**:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+4. **Open** [http://localhost:3000](http://localhost:3000) in your browser
 
-## User Flow
+### Full Setup (With Python Backend)
 
-### First Time User
-1. **Home Page**: "Let's Learn Alphabets!"
-2. **Language Selection**: Choose English (expandable to more languages)
-3. **Mode Selection**: Choose between Practice or Test mode
+#### Option 1: Using Batch Script (Windows)
+```bash
+# Simply run the batch script
+start-servers.bat
 
-### Practice Mode Flow
-1. View current letter to practice
-2. Draw the letter on canvas
-3. Get instant feedback
-4. Navigate freely using Previous/Next buttons
-5. Repeat as many times as needed
+# This automatically starts:
+# - Python backend on http://localhost:8000
+# - Next.js frontend on http://localhost:3000
+```
 
-### Test Mode Flow
-1. View current letter
-2. Draw the letter carefully
-3. Click "Submit Answer" (single attempt)
-4. Move to next letter automatically
-5. After all 26 letters, view results
-6. Options:
-   - **Home**: Return to home page
-   - **Corrected Test**: Retake only wrong letters
-   - **Retake Full Test**: Start over with all 26 letters
+#### Option 2: Manual Setup
 
-### Corrected Test Cycle
-1. Presented with only the letters you got wrong
-2. Submit each answer (single attempt)
-3. If you make mistakes again:
-   - Those letters go to another corrected test
-4. Continue until you master all letters
-5. Receive congratulations when all letters are mastered!
+**Terminal 1 - Frontend**:
+```bash
+npm install
+npm run dev
+# Runs on http://localhost:3000
+```
+
+**Terminal 2 - Backend**:
+```bash
+cd python_backend
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Start the server
+python server.py
+# Runs on http://localhost:8000
+```
+
+### Production Build
+
+```bash
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Create production build |
+| `npm start` | Start production server |
+| `npm run lint` | Run ESLint for code quality |
 
 ## Project Structure
 
 ```
 akshara/
-├── app/
-│   ├── layout.tsx              # Root layout with metadata
-│   ├── page.tsx                # Home page with language/mode selection
-│   ├── practice/
-│   │   └── page.tsx            # Practice mode
-│   ├── test/
-│   │   └── page.tsx            # Test mode
-│   ├── results/
-│   │   └── page.tsx            # Results page with corrected test option
-│   ├── corrected-test/
-│   │   └── page.tsx            # Corrected test for wrong answers
-│   └── globals.css             # Global styles
-├── components/
-│   └── DrawingCanvas.tsx       # Reusable drawing canvas component
-├── public/                     # Static assets
-└── package.json                # Dependencies and scripts
+├── app/                           # Next.js App Router
+│   ├── page.tsx                   # Home page
+│   ├── layout.tsx                 # Root layout
+│   ├── globals.css                # Global styles
+│   ├── choose-language/           # Language selection
+│   ├── practice/                  # Writing practice
+│   │   ├── page.tsx               # Capital letters (A-Z)
+│   │   ├── numbers/page.tsx       # Numbers (0-9)
+│   │   └── small/page.tsx         # Lowercase (a-z)
+│   ├── test/                      # Writing tests
+│   │   ├── page.tsx               # Capital letters test
+│   │   ├── numbers/page.tsx       # Numbers test
+│   │   └── small/page.tsx         # Lowercase test
+│   ├── reading/                   # Speaking section
+│   │   ├── practice/              # Speaking practice
+│   │   ├── test/                  # Speaking tests
+│   │   └── learn/                 # Learning modes
+│   ├── corrected-test/            # Retake wrong answers
+│   ├── results/                   # Results & scoring
+│   └── api/                       # Backend API routes
+│       └── recognize-letter/      # Letter recognition
+├── components/                    # React components
+│   ├── DrawingCanvas.tsx          # Drawing canvas
+│   ├── DrawingAnimation.tsx       # Celebration animations
+│   └── KeyboardDrawingTutorial.tsx
+├── utils/                         # Utility functions
+│   ├── tensorflowModel.ts
+│   ├── audioRecorder.ts
+│   └── deviceDetection.ts
+├── hooks/                         # Custom React hooks
+│   └── useKeyboardDrawing.ts
+├── public/                        # Static assets
+│   ├── images/                    # GIF animations
+│   └── js_model/                  # TensorFlow.js model
+├── python_backend/                # Python FastAPI backend
+│   ├── server.py                  # Main server
+│   ├── requirements.txt           # Python dependencies
+│   └── README.md                  # Backend docs
+├── package.json                   # npm dependencies
+├── tsconfig.json                  # TypeScript config
+├── next.config.ts                 # Next.js config
+├── tailwind.config.ts             # Tailwind config
+└── start-servers.bat              # Windows startup script
 ```
 
-## Key Components
+## Application Routes
 
-### DrawingCanvas Component
-- Handles mouse and touch events for drawing
-- Exports canvas data as image for OCR processing
-- Includes clear functionality
-- Disabled state during processing
+| Route | Description |
+|-------|-------------|
+| `/` | Home page - Section & mode selection |
+| `/choose-language` | Language selection |
+| `/practice` | Capital letters practice (A-Z) |
+| `/practice/small` | Lowercase letters practice (a-z) |
+| `/practice/numbers` | Numbers practice (0-9) |
+| `/test` | Capital letters test |
+| `/test/small` | Lowercase letters test |
+| `/test/numbers` | Numbers test |
+| `/reading/practice` | Speaking practice |
+| `/reading/test` | Speaking test |
+| `/corrected-test` | Corrected writing test |
+| `/results` | Results & scoring |
 
-### Home Page
-- Language selection interface
-- Mode selection (Practice/Test)
-- Information about the app
+## User Flow
 
-### Practice Mode
-- Free navigation between letters
-- Instant OCR feedback
-- Score tracking for motivation
-- No pressure environment
+### Writing Flow
+1. **Home Page**: Select "Writing" section
+2. **Mode Selection**: Choose Practice or Test
+3. **Character Selection**: Capital/Lowercase/Numbers
+4. **Draw**: Write the character on canvas
+5. **Submit**: Get AI feedback
+6. **Results**: View score and take corrected test if needed
 
-### Test Mode
-- Linear progression through alphabets
-- Submit button for controlled testing
-- Single attempt policy
-- Wrong answer tracking
-
-### Results Page
-- Grade display (A+ to D)
-- Score breakdown
-- List of wrong answers
-- Navigation options
-- Conditional rendering for corrected test availability
-
-### Corrected Test
-- Dynamic letter list based on wrong answers
-- Same test format as main test
-- Recursive correction system
-- Mastery celebration when complete
+### Speaking Flow
+1. **Home Page**: Select "Reading" section
+2. **Mode Selection**: Choose Practice or Test
+3. **Listen**: Hear the pronunciation
+4. **Speak**: Say the letter/number
+5. **Feedback**: Get recognition result
+6. **Progress**: Move to next character
 
 ## Scoring System
 
-- **Grade A+**: 90-100% (Outstanding!)
-- **Grade A**: 80-89% (Excellent!)
-- **Grade B**: 70-79% (Good Job!)
-- **Grade C**: 60-69% (Keep Practicing!)
-- **Grade D**: Below 60% (Need More Practice)
+| Grade | Score Range | Message |
+|-------|-------------|---------|
+| A+ | 90-100% | Outstanding! |
+| A | 80-89% | Excellent! |
+| B | 70-79% | Good Job! |
+| C | 60-69% | Keep Practicing! |
+| D | Below 60% | Need More Practice |
 
-## Build for Production
+## Troubleshooting
 
-```bash
-npm run build
-npm start
+### Common Issues
+
+**Speech recognition not working?**
+- Use Chrome or Edge browser
+- Allow microphone permissions
+- Check your microphone settings
+
+**Handwriting not recognized?**
+- Draw clearly within the canvas
+- Use thicker strokes
+- Wait for the canvas to load completely
+
+**Backend not connecting?**
+- Ensure Python virtual environment is activated
+- Check if port 8000 is available
+- Verify all Python dependencies are installed
+
+## Dependencies
+
+### Frontend (package.json)
+```json
+{
+  "next": "15.5.6",
+  "react": "19.1.0",
+  "react-dom": "19.1.0",
+  "tesseract.js": "^6.0.1",
+  "@tensorflow/tfjs": "^4.22.0",
+  "gifuct-js": "^2.1.2",
+  "tailwindcss": "^4",
+  "typescript": "^5"
+}
 ```
 
-## Future Enhancements
-
-- Add lowercase alphabet practice (a-z)
-- Include number writing (0-9)
-- Add multiple languages (Hindi, Spanish, French, etc.)
-- Implement sound effects and animations
-- Add difficulty levels (beginner, intermediate, advanced)
-- Store user progress with authentication
-- Add timed tests
-- Include handwriting improvement tips
-- Parent dashboard to track child progress
-- Certificate generation on completion
+### Backend (requirements.txt)
+```
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+numpy>=1.24.0
+librosa>=0.10.0
+tensorflow>=2.15.0
+pydantic>=2.0.0
+python-multipart>=0.0.6
+```
 
 ## License
 
@@ -204,3 +306,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## Support
 
 For issues and feature requests, please open an issue on GitHub.
+
+---
+
+**Developed with Neurogati**

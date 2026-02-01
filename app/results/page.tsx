@@ -12,6 +12,7 @@ interface TestResults {
   allMastered?: boolean;
   type?: 'writing' | 'reading';
   subtype?: 'letters' | 'numbers';
+  letterType?: 'capital' | 'small' | 'learn' | string;
 }
 
 export default function ResultsPage() {
@@ -29,7 +30,6 @@ export default function ResultsPage() {
 
   const handleCorrectedTest = () => {
     if (results && results.wrongAnswers.length > 0) {
-      // Route to the correct corrected test based on type and subtype
       if (results.type === 'reading') {
         localStorage.setItem('correctedTestLetters', JSON.stringify(results.wrongAnswers));
         router.push('/reading/corrected-test');
@@ -38,7 +38,10 @@ export default function ResultsPage() {
         router.push('/corrected-test/numbers');
       } else {
         localStorage.setItem('correctedTestLetters', JSON.stringify(results.wrongAnswers));
-        router.push('/corrected-test'); // Default to letters writing
+        if (results.letterType) {
+          localStorage.setItem('correctedTestLetterType', results.letterType);
+        }
+        router.push('/corrected-test');
       }
     }
   };
@@ -46,17 +49,17 @@ export default function ResultsPage() {
   const percentage = results ? Math.round((results.score / results.total) * 100) : 0;
 
   const getGrade = () => {
-    if (percentage >= 90) return { grade: 'A+', color: 'text-green-600', message: 'Outstanding!' };
-    if (percentage >= 80) return { grade: 'A', color: 'text-green-500', message: 'Excellent!' };
-    if (percentage >= 70) return { grade: 'B', color: 'text-blue-600', message: 'Good Job!' };
-    if (percentage >= 60) return { grade: 'C', color: 'text-yellow-600', message: 'Keep Practicing!' };
-    return { grade: 'D', color: 'text-red-600', message: 'Need More Practice' };
+    if (percentage >= 90) return { grade: 'A+', color: 'text-emerald-600', message: 'Outstanding!' };
+    if (percentage >= 80) return { grade: 'A', color: 'text-emerald-500', message: 'Excellent!' };
+    if (percentage >= 70) return { grade: 'B', color: 'text-indigo-600', message: 'Good Job!' };
+    if (percentage >= 60) return { grade: 'C', color: 'text-amber-600', message: 'Keep Practicing!' };
+    return { grade: 'D', color: 'text-rose-600', message: 'Need More Practice' };
   };
 
   if (!results) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-300 p-8 flex items-center justify-center">
-        <div className="text-white text-2xl">Loading results...</div>
+      <main className="min-h-screen bg-warm-gradient p-8 flex items-center justify-center">
+        <div className="text-slate-600 text-2xl">Loading results...</div>
       </main>
     );
   }
@@ -64,63 +67,66 @@ export default function ResultsPage() {
   const gradeInfo = getGrade();
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-300 p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-6xl font-bold text-white mb-2 drop-shadow-lg">Test Results</h1>
-          <p className="text-2xl text-white drop-shadow">Let&apos;s see how you did!</p>
+    <main className="min-h-screen bg-warm-gradient">
+      {/* Top Banner */}
+      <div className="bg-indigo-600 px-8 py-6 mb-8">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-bold text-white text-center">Test Results</h1>
+          <p className="text-xl text-indigo-200 text-center mt-1">Let&apos;s see how you did!</p>
         </div>
+      </div>
 
-        <div className="bg-white rounded-xl shadow-2xl p-12 mb-8">
+      <div className="max-w-4xl mx-auto px-8">
+        <div className="bg-white rounded-2xl shadow-lg p-12 mb-8">
           {results.allMastered ? (
             <div className="text-center mb-8">
-              <div className="text-9xl mb-4">🎉</div>
-              <h2 className="text-5xl font-bold text-green-600 mb-4">Congratulations!</h2>
-              <p className="text-3xl font-semibold text-gray-700 mb-4">
+              <div className="text-8xl mb-4">🎉</div>
+              <h2 className="text-4xl font-bold text-emerald-600 mb-4">Congratulations!</h2>
+              <p className="text-2xl font-semibold text-slate-700 mb-4">
                 You&apos;ve mastered ALL the alphabets!
               </p>
-              <p className="text-6xl font-bold text-green-600">
+              <p className="text-5xl font-bold text-emerald-600">
                 {results.score} / {results.total}
               </p>
-              <p className="text-2xl text-green-600 mt-2">Perfect Score!</p>
+              <p className="text-xl text-emerald-600 mt-2">Perfect Score!</p>
             </div>
           ) : (
             <div className="text-center mb-8">
               {results.isCorrectedTest && (
-                <div className="mb-4 text-xl text-orange-600 font-semibold">
+                <div className="mb-4 text-lg text-amber-600 font-semibold">
                   Corrected Test Results
                 </div>
               )}
-              <div className={`text-9xl font-bold ${gradeInfo.color} mb-4`}>
+              <div className={`text-8xl font-bold ${gradeInfo.color} mb-4`}>
                 {gradeInfo.grade}
               </div>
-              <p className="text-3xl font-semibold text-gray-700 mb-2">{gradeInfo.message}</p>
-              <p className="text-6xl font-bold text-gray-800">
+              <p className="text-2xl font-semibold text-slate-700 mb-2">{gradeInfo.message}</p>
+              <p className="text-5xl font-bold text-slate-800">
                 {results.score} / {results.total}
               </p>
-              <p className="text-2xl text-gray-600 mt-2">{percentage}% Correct</p>
+              <p className="text-xl text-slate-600 mt-2">{percentage}% Correct</p>
             </div>
           )}
 
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            <div className="bg-green-100 rounded-lg p-6">
-              <h3 className="text-2xl font-bold text-green-800 mb-3">Correct Answers</h3>
-              <p className="text-6xl font-bold text-green-600">{results.score}</p>
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <div className="bg-emerald-50 rounded-2xl p-6">
+              <h3 className="text-xl font-bold text-emerald-800 mb-3">Correct Answers</h3>
+              <p className="text-5xl font-bold text-emerald-600">{results.score}</p>
             </div>
-            <div className="bg-red-100 rounded-lg p-6">
-              <h3 className="text-2xl font-bold text-red-800 mb-3">Wrong Answers</h3>
-              <p className="text-6xl font-bold text-red-600">{results.wrongAnswers.length}</p>
+            <div className="bg-rose-50 rounded-2xl p-6">
+              <h3 className="text-xl font-bold text-rose-800 mb-3">Wrong Answers</h3>
+              <p className="text-5xl font-bold text-rose-600">{results.wrongAnswers.length}</p>
             </div>
           </div>
 
           {results.wrongAnswers.length > 0 && (
-            <div className="bg-yellow-50 rounded-lg p-6 mb-8">
-              <h3 className="text-2xl font-bold text-yellow-800 mb-3">{results.subtype === 'numbers' ? 'Numbers' : 'Letters'} to Practice:</h3>
+            <div className="bg-amber-50 rounded-2xl p-6 mb-8">
+              <h3 className="text-xl font-bold text-amber-800 mb-3">{results.subtype === 'numbers' ? 'Numbers' : 'Letters'} to Practice:</h3>
               <div className="flex flex-wrap gap-3 justify-center">
                 {results.wrongAnswers.map((letter, index) => (
                   <span
                     key={index}
-                    className="text-3xl font-bold text-yellow-700 bg-yellow-200 px-6 py-3 rounded-lg"
+                    className="text-2xl font-bold text-amber-700 bg-amber-200 px-5 py-2.5 rounded-xl"
                   >
                     {letter}
                   </span>
@@ -131,31 +137,49 @@ export default function ResultsPage() {
 
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Link href="/">
-              <button className="w-full md:w-auto px-8 py-4 bg-blue-600 text-white rounded-lg font-bold text-xl hover:bg-blue-700 transition-colors shadow-lg">
-                🏠 Home
+              <button className="w-full md:w-auto px-8 py-4 bg-indigo-600 text-white rounded-xl font-bold text-lg hover:bg-indigo-700 transition-colors shadow-lg">
+                Home
               </button>
             </Link>
 
             {results.wrongAnswers.length > 0 && (
               <button
                 onClick={handleCorrectedTest}
-                className="w-full md:w-auto px-8 py-4 bg-orange-600 text-white rounded-lg font-bold text-xl hover:bg-orange-700 transition-colors shadow-lg"
+                className="w-full md:w-auto px-8 py-4 bg-amber-500 text-white rounded-xl font-bold text-lg hover:bg-amber-600 transition-colors shadow-lg"
               >
-                📝 Corrected Test ({results.wrongAnswers.length} {results.subtype === 'numbers' ? 'numbers' : 'letters'})
+                Corrected Test ({results.wrongAnswers.length} {results.subtype === 'numbers' ? 'numbers' : 'letters'})
               </button>
             )}
 
-            <Link href={results.type === 'reading' ? '/reading/test' : '/test'}>
-              <button className="w-full md:w-auto px-8 py-4 bg-green-600 text-white rounded-lg font-bold text-xl hover:bg-green-700 transition-colors shadow-lg">
-                🔄 Retake Full Test
+            <Link href={
+              results.type === 'reading'
+                ? results.subtype === 'numbers'
+                  ? '/reading/test/numbers'
+                  : results.letterType === 'learn'
+                  ? '/reading/learn/test'
+                  : '/reading/test'
+                : results.subtype === 'numbers'
+                ? '/test/numbers'
+                : results.letterType === 'small'
+                ? '/test/small'
+                : '/test'
+            }>
+              <button className="w-full md:w-auto px-8 py-4 bg-emerald-600 text-white rounded-xl font-bold text-lg hover:bg-emerald-700 transition-colors shadow-lg">
+                Retake Full Test
+              </button>
+            </Link>
+
+            <Link href="/choose-language">
+              <button className="w-full md:w-auto px-8 py-4 bg-slate-600 text-white rounded-xl font-bold text-lg hover:bg-slate-700 transition-colors shadow-lg">
+                Choose Another
               </button>
             </Link>
           </div>
         </div>
 
-        <div className="bg-white/80 rounded-xl p-6">
-          <h3 className="text-2xl font-bold text-gray-800 mb-3">What&apos;s Next?</h3>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 text-lg">
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+          <h3 className="text-xl font-bold text-slate-800 mb-3">What&apos;s Next?</h3>
+          <ul className="list-disc list-inside space-y-2 text-slate-600 text-lg">
             {results.wrongAnswers.length > 0 ? (
               <>
                 <li>Take the Corrected Test to practice your mistakes</li>

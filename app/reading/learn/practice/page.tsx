@@ -238,31 +238,9 @@ export default function LearnAlphabetsPracticePage() {
     setTimeout(() => { oscillator.stop(); context.close(); }, 400);
   };
 
-  // Confetti animation
+  // Confetti animation (removed - clean UI)
   const createConfetti = () => {
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
-    const confettiCount = 50;
-
-    for (let i = 0; i < confettiCount; i++) {
-      setTimeout(() => {
-        const confetti = document.createElement('div');
-        confetti.style.position = 'fixed';
-        confetti.style.width = Math.random() * 10 + 5 + 'px';
-        confetti.style.height = Math.random() * 10 + 5 + 'px';
-        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.left = Math.random() * 100 + '%';
-        confetti.style.top = '-10px';
-        confetti.style.opacity = '1';
-        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-        confetti.style.animation = `confetti-fall ${Math.random() * 2 + 2}s linear forwards`;
-        confetti.style.zIndex = '9999';
-        confetti.style.pointerEvents = 'none';
-
-        document.body.appendChild(confetti);
-
-        setTimeout(() => confetti.remove(), 4000);
-      }, i * 30);
-    }
+    // No-op: confetti removed for clean UI
   };
 
   // Text-to-Speech with anti-double-play protection
@@ -342,21 +320,23 @@ export default function LearnAlphabetsPracticePage() {
 
   if (!isSupported) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-300 p-8">
+      <main className="min-h-screen bg-warm-gradient p-8">
         <div className="max-w-4xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <Link href="/">
-              <button className="px-6 py-3 bg-white text-gray-700 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-                ← Home
+          <div className="bg-violet-600 rounded-2xl shadow-lg p-4 mb-6 flex justify-between items-center">
+            <Link href="/choose-language?section=reading">
+              <button className="px-5 py-2.5 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-colors">
+                ← Back
               </button>
             </Link>
+            <h1 className="text-3xl font-bold text-white">Speech Not Supported</h1>
+            <div className="w-20"></div>
           </div>
-          <div className="bg-white rounded-xl shadow-2xl p-12 text-center">
+          <div className="bg-white rounded-xl shadow-lg p-12 text-center">
             <div className="text-6xl mb-4">⚠️</div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            <h2 className="text-3xl font-bold text-slate-800 mb-4">
               Speech Recognition Not Supported
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-slate-600">
               Your browser doesn&apos;t support speech recognition. Please try using Google Chrome or Microsoft Edge.
             </p>
           </div>
@@ -367,18 +347,22 @@ export default function LearnAlphabetsPracticePage() {
 
   if (showCompletion) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-300 p-8 flex items-center justify-center">
+      <main className="min-h-screen bg-warm-gradient p-8 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-9xl mb-6">🎉</div>
-          <h1 className="text-6xl font-bold text-white mb-6 drop-shadow-lg">
+          <div className="bg-white rounded-full p-8 shadow-2xl mb-6 inline-block">
+            <svg className="w-32 h-32 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h1 className="text-6xl font-bold text-slate-800 mb-6">
             Great Job!
           </h1>
-          <p className="text-3xl text-white mb-8 drop-shadow">
+          <p className="text-3xl text-emerald-600 mb-8 font-semibold">
             You mastered all alphabets!
           </p>
-          <Link href="/">
-            <button className="px-8 py-4 bg-white text-purple-600 rounded-xl font-bold text-2xl hover:bg-gray-100 transition-colors shadow-lg">
-              🏠 Home
+          <Link href="/choose-language?section=reading">
+            <button className="px-8 py-4 bg-violet-600 text-white rounded-xl font-bold text-2xl hover:bg-violet-700 transition-colors shadow-lg">
+              Done
             </button>
           </Link>
         </div>
@@ -387,73 +371,43 @@ export default function LearnAlphabetsPracticePage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-300 relative">
-      {/* Add confetti keyframes */}
-      <style jsx>{`
-        @keyframes confetti-fall {
-          to {
-            transform: translateY(100vh) rotate(360deg);
-            opacity: 0;
-          }
-        }
-      `}</style>
-
+    <main className="min-h-screen bg-warm-gradient relative">
       {/* Celebration Overlay */}
       {showCelebration && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-          <div className="relative">
-            <div className="relative bg-white rounded-full p-8 shadow-2xl animate-bounce">
-              <svg
-                className="w-48 h-48 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
-                  d="M5 13l4 4L19 7"
-                />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="text-center">
+            <div className="bg-white rounded-full p-8 shadow-2xl mb-6 inline-block">
+              <svg className="w-32 h-32 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <div className="text-center mt-6 space-y-3">
-              <h2 className="text-6xl font-bold text-white drop-shadow-lg animate-pulse">
-                Excellent! 🌟
-              </h2>
-              <p className="text-3xl text-yellow-300 font-semibold drop-shadow">
-                Perfect Pronunciation!
-              </p>
-            </div>
+            <h2 className="text-5xl font-bold text-white mb-2">Correct!</h2>
+            <p className="text-2xl text-emerald-300 font-semibold">Great job!</p>
           </div>
         </div>
       )}
 
       {/* Header */}
-      <div className="flex justify-between items-center p-6 bg-white/95 shadow-lg">
-        <Link href="/">
-          <button className="px-6 py-3 bg-green-500 text-white rounded-lg font-bold text-lg hover:bg-green-600 transition-colors shadow-lg">
-            ← Back
-          </button>
-        </Link>
-        
-        <h1 className="text-4xl font-bold text-green-600">
-          🧩 Practice Mode - Learn Alphabets
-        </h1>
-
-        <div className="w-24"></div>
+      <div className="p-6">
+        <div className="bg-violet-600 rounded-2xl shadow-lg p-4 mb-6 flex justify-between items-center">
+          <button onClick={() => window.location.href = '/choose-language?section=reading&subsection=learn&lang=en'} className="px-5 py-2.5 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-colors">
+              ← Back
+            </button>
+          <h1 className="text-3xl font-bold text-white">Practice Mode - Learn Alphabets</h1>
+          <div className="w-20"></div>
+        </div>
       </div>
 
       {/* Alphabet Navigation */}
-      <div className="bg-white/95 p-4 flex justify-center gap-2 flex-wrap shadow-lg">
+      <div className="bg-white p-4 mx-6 rounded-xl shadow-lg flex justify-center gap-2 flex-wrap mb-6">
         {alphabetData.map((data, index) => (
           <button
             key={data.letter}
             onClick={() => jumpToLetter(index)}
             className={`w-12 h-12 rounded-full font-bold text-lg transition-all hover:scale-110 cursor-pointer ${
               index === currentIndex
-                ? 'bg-green-600 text-white border-2 border-green-800'
-                : 'bg-white border-2 border-green-300 text-green-600 hover:bg-green-100'
+                ? 'bg-violet-600 text-white'
+                : 'bg-slate-100 border border-slate-300 text-slate-600 hover:bg-violet-100 hover:text-violet-600'
             }`}
           >
             {data.letter}
@@ -465,7 +419,7 @@ export default function LearnAlphabetsPracticePage() {
       <div className="flex flex-col lg:flex-row justify-between items-center p-8 gap-12">
         {/* Left Side - Letter Display */}
         <div className="flex-1 flex flex-col items-center">
-          <h2 className="text-6xl lg:text-8xl font-bold text-white mb-8 drop-shadow-lg text-center">
+          <h2 className="text-6xl lg:text-8xl font-bold text-violet-600 mb-8 text-center">
             {currentData.letter} for {currentData.word}
           </h2>
           
@@ -481,7 +435,7 @@ export default function LearnAlphabetsPracticePage() {
               {currentData.emoji}
             </div>
             <div className={`text-4xl lg:text-5xl font-bold text-center transition-colors ${
-              isSpeaking ? 'text-orange-500' : 'text-green-600'
+              isSpeaking ? 'text-orange-500' : 'text-violet-600'
             }`}>
               {currentData.word}
             </div>
@@ -504,21 +458,21 @@ export default function LearnAlphabetsPracticePage() {
               className={`px-8 py-6 text-2xl lg:text-3xl font-bold rounded-full shadow-lg transition-all ${
                 isListening
                   ? 'bg-red-500 text-white animate-pulse cursor-not-allowed'
-                  : 'bg-green-500 text-white hover:bg-green-600 hover:scale-105'
+                  : 'bg-emerald-600 text-white hover:bg-emerald-700 hover:scale-105'
               }`}
             >
               🎙️ Say {currentData.word}!
             </button>
 
-            <div className="w-full p-6 bg-black/30 rounded-2xl min-h-20 flex items-center justify-center">
-              <span className="text-white text-xl lg:text-2xl text-center">
+            <div className="w-full p-6 bg-slate-100 border border-slate-200 rounded-2xl min-h-20 flex items-center justify-center">
+              <span className="text-slate-600 text-xl lg:text-2xl text-center">
                 {currentTranscript || 'Your voice will appear here...'}
               </span>
             </div>
 
             {feedback && (
               <div className={`text-2xl lg:text-3xl font-bold text-center p-4 rounded-xl ${
-                feedbackType === 'correct' ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'
+                feedbackType === 'correct' ? 'text-emerald-600 bg-emerald-50' : 'text-red-600 bg-red-50'
               }`}>
                 {feedback}
               </div>
@@ -530,15 +484,15 @@ export default function LearnAlphabetsPracticePage() {
                   onClick={handleRetry}
                   className="px-6 py-3 bg-orange-500 text-white rounded-xl font-bold text-lg hover:bg-orange-600 transition-colors shadow-lg"
                 >
-                  🔁 Re-record
+                  Re-record
                 </button>
-                
+
                 {feedbackType === 'correct' && (
                   <button
                     onClick={goToNextLetter}
-                    className="px-6 py-3 bg-green-500 text-white rounded-xl font-bold text-lg hover:bg-green-600 transition-colors shadow-lg"
+                    className="px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold text-lg hover:bg-emerald-700 transition-colors shadow-lg"
                   >
-                    ⏭️ Next
+                    Next
                   </button>
                 )}
               </div>
@@ -550,16 +504,16 @@ export default function LearnAlphabetsPracticePage() {
               <button
                 onClick={goToPreviousLetter}
                 disabled={currentIndex === 0}
-                className="px-6 py-3 bg-gray-500 text-white rounded-lg font-bold text-lg hover:bg-gray-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                className="px-6 py-3 bg-slate-500 text-white rounded-lg font-bold text-lg hover:bg-slate-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
               >
-                ← Previous
+                Previous
               </button>
               <button
                 onClick={goToNextLetter}
                 disabled={currentIndex === alphabetData.length - 1}
-                className="px-6 py-3 bg-green-500 text-white rounded-lg font-bold text-lg hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                className="px-6 py-3 bg-violet-600 text-white rounded-lg font-bold text-lg hover:bg-violet-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
               >
-                Next →
+                Next
               </button>
           </div>
         </div>

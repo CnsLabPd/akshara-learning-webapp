@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
+
 
 const NUMBERS = '0123456789'.split('');
 
@@ -196,21 +196,21 @@ export default function SpeakingPracticeNumbersPage() {
 
   if (!isSupported) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-pink-400 via-rose-300 to-purple-300 p-8">
+      <main className="min-h-screen bg-warm-gradient p-8">
         <div className="max-w-4xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <Link href="/">
-              <button className="px-6 py-3 bg-white text-gray-700 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-                ← Home
-              </button>
-            </Link>
+          <div className="bg-violet-600 rounded-2xl shadow-lg p-4 mb-4 flex justify-between items-center">
+            <button onClick={() => window.location.href = '/choose-language?section=reading&subsection=numbers'} className="px-5 py-2.5 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-colors">← Back</button>
+            <h1 className="text-3xl font-bold text-white">Speaking Practice - Numbers</h1>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></span>
+              <span className="text-white text-sm font-semibold">AI Active</span>
+            </div>
           </div>
           <div className="bg-white rounded-xl shadow-2xl p-12 text-center">
-            <div className="text-6xl mb-4">⚠️</div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            <h2 className="text-3xl font-bold text-slate-800 mb-4">
               Speech Recognition Not Supported
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-slate-600">
               Your browser doesn&apos;t support speech recognition. Please try using Google Chrome or Microsoft Edge.
             </p>
           </div>
@@ -220,88 +220,41 @@ export default function SpeakingPracticeNumbersPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-pink-400 via-rose-300 to-purple-300 p-8 relative">
+    <main className="min-h-screen bg-warm-gradient p-8 relative">
       {/* Celebration Overlay */}
       {showCelebration && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center justify-center">
-              {[...Array(20)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute w-3 h-3 rounded-full animate-ping"
-                  style={{
-                    backgroundColor: ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'][i % 6],
-                    animationDelay: `${i * 0.1}s`,
-                    animationDuration: '1s',
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                  }}
-                />
-              ))}
-            </div>
-
-            <div className="relative bg-white rounded-full p-8 shadow-2xl animate-bounce">
-              <svg
-                className="w-48 h-48 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
-                  d="M5 13l4 4L19 7"
-                  style={{
-                    strokeDasharray: 100,
-                    strokeDashoffset: 100,
-                    animation: 'draw 0.5s ease-in-out forwards',
-                  }}
-                />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="text-center">
+            <div className="bg-white rounded-full p-8 shadow-2xl mb-6 inline-block">
+              <svg className="w-32 h-32 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-
-            <div className="text-center mt-6 space-y-3">
-              <h2 className="text-6xl font-bold text-white drop-shadow-lg animate-pulse">
-                Excellent! 🎉
-              </h2>
-              <p className="text-3xl text-yellow-300 font-semibold drop-shadow">
-                Perfect Pronunciation!
-              </p>
-            </div>
+            <h2 className="text-5xl font-bold text-white mb-2">Excellent!</h2>
+            <p className="text-2xl text-emerald-300 font-semibold">Perfect Pronunciation!</p>
           </div>
         </div>
       )}
 
-      <style jsx>{`
-        @keyframes draw {
-          to {
-            stroke-dashoffset: 0;
-          }
-        }
-      `}</style>
-
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <Link href="/">
-            <button className="px-6 py-3 bg-white text-gray-700 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-              ← Home
-            </button>
-          </Link>
-          <h1 className="text-5xl font-bold text-white drop-shadow-lg">Speaking Practice - Numbers</h1>
-          <div className="w-24"></div>
+        <div className="bg-violet-600 rounded-2xl shadow-lg p-4 mb-4 flex justify-between items-center">
+          <button onClick={() => window.location.href = '/choose-language?section=reading&subsection=numbers'} className="px-5 py-2.5 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-colors">← Back</button>
+          <h1 className="text-3xl font-bold text-white">Speaking Practice - Numbers</h1>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></span>
+            <span className="text-white text-sm font-semibold">AI Active</span>
+          </div>
         </div>
 
         <div className="bg-white rounded-xl shadow-2xl p-6 mb-8">
           <div className="flex justify-between items-center">
             <div className="text-center flex-1">
               <p className="text-gray-600 text-lg mb-1">Current Number</p>
-              <p className="text-8xl font-bold text-pink-600">{currentNumber}</p>
+              <p className="text-8xl font-bold text-violet-600">{currentNumber}</p>
             </div>
             <div className="text-center flex-1">
               <p className="text-gray-600 text-lg mb-1">Progress</p>
-              <p className="text-4xl font-bold text-purple-600">
+              <p className="text-4xl font-bold text-slate-600">
                 {currentIndex + 1} / {NUMBERS.length}
               </p>
             </div>
@@ -315,17 +268,17 @@ export default function SpeakingPracticeNumbersPage() {
         <div className="bg-white rounded-xl shadow-2xl p-8">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              Practice saying: <span className="text-pink-600">{currentNumber}</span>
+              Practice saying: <span className="text-violet-600">{currentNumber}</span>
             </h2>
             <p className="text-gray-600">Click &apos;Listen&apos; to hear, then record and submit</p>
-            <p className="text-sm text-orange-600 font-semibold mt-2">💡 Tip: Say &quot;{getNumberWord(currentNumber)}&quot;</p>
+            <p className="text-sm text-orange-600 font-semibold mt-2">Tip: Say &quot;{getNumberWord(currentNumber)}&quot;</p>
           </div>
 
           <div className="flex justify-center gap-6 mb-8">
             <button
               onClick={playNumberSound}
               disabled={isListening}
-              className="px-8 py-6 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-bold text-2xl hover:from-blue-600 hover:to-cyan-600 transition-all transform hover:scale-105 shadow-lg flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-8 py-6 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-2xl transition-all transform hover:scale-105 shadow-lg flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="text-4xl">🔊</span>
               <span>Listen</span>
@@ -339,7 +292,7 @@ export default function SpeakingPracticeNumbersPage() {
                   ? 'bg-red-500 animate-pulse'
                   : hasRecorded
                   ? 'bg-green-500'
-                  : 'bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600'
+                  : 'bg-violet-600 hover:bg-violet-700'
               } text-white rounded-xl font-bold text-2xl transition-all transform hover:scale-105 shadow-lg flex items-center gap-3 disabled:cursor-not-allowed disabled:opacity-75`}
             >
               <span className="text-4xl">🎤</span>
@@ -357,7 +310,7 @@ export default function SpeakingPracticeNumbersPage() {
               </div>
               <div className="pt-4 border-t border-blue-200">
                 <p className="text-gray-500 text-xs mb-1">Expected pronunciation:</p>
-                <p className="text-lg font-semibold text-purple-600">
+                <p className="text-lg font-semibold text-slate-600">
                   &quot;{getNumberWord(currentNumber)}&quot;
                 </p>
               </div>
@@ -368,16 +321,16 @@ export default function SpeakingPracticeNumbersPage() {
             <button
               onClick={handleSubmit}
               disabled={!hasRecorded}
-              className="px-12 py-4 bg-pink-500 text-white rounded-lg font-bold text-2xl hover:bg-pink-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
+              className="px-12 py-4 bg-violet-600 text-white rounded-lg font-bold text-2xl hover:bg-violet-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
             >
               Submit
             </button>
             <button
               onClick={handleRetry}
               disabled={isListening}
-              className="px-12 py-4 bg-orange-500 text-white rounded-lg font-bold text-2xl hover:bg-orange-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
+              className="px-12 py-4 bg-slate-200 text-slate-700 rounded-lg font-bold text-2xl hover:bg-slate-300 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
             >
-              🔄 Retry
+              Retry
             </button>
           </div>
 
@@ -404,7 +357,7 @@ export default function SpeakingPracticeNumbersPage() {
             <button
               onClick={nextNumber}
               disabled={currentIndex === NUMBERS.length - 1}
-              className="px-6 py-3 bg-pink-500 text-white rounded-lg font-bold text-lg hover:bg-pink-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              className="px-6 py-3 bg-violet-600 text-white rounded-lg font-bold text-lg hover:bg-violet-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
             >
               Next →
             </button>
