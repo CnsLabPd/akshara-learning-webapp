@@ -109,7 +109,7 @@ export default function TestSmallClient() {
 
       // Show what the model recognized with confidence
       const confidencePercent = Math.round(result.confidence * 100);
-      setRecognizedOutput(`${result.letter} (${confidencePercent}% confidence)`);
+      setRecognizedOutput(`${result.letter}`);
 
       // Show the preprocessed image that was sent to the model
       if (result.preprocessedImageUrl) {
@@ -173,6 +173,7 @@ export default function TestSmallClient() {
         // Mark as wrong - includes wrong case, wrong letter, or low confidence
         setWrongAnswers([...wrongAnswers, currentLetter]);
         setWrongCaseDetected(matchResult.isWrongCase && hasGoodConfidence);
+        setRecognizedOutput('');
         setShowIncorrect(true);
 
         // Move to next letter or finish test
