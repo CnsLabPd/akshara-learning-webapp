@@ -109,7 +109,7 @@ export default function TestClient() {
 
       // Show what the model recognized with confidence
       const confidencePercent = Math.round(result.confidence * 100);
-      setRecognizedOutput(`${result.letter} (${confidencePercent}% confidence)`);
+      setRecognizedOutput(`${result.letter}`);
 
       // Show the preprocessed image that was sent to the model
       if (result.preprocessedImageUrl) {
