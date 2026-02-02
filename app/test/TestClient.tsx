@@ -166,6 +166,7 @@ export default function TestClient() {
         // Mark as wrong - includes wrong case, wrong letter, or low confidence
         setWrongAnswers([...wrongAnswers, currentLetter]);
         setWrongCaseDetected(matchResult.isWrongCase && hasGoodConfidence);
+        setRecognizedOutput('');
         setShowIncorrect(true);
 
         // Move to next letter or finish test
