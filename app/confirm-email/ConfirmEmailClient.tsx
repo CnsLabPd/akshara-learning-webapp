@@ -4,6 +4,19 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
+// Icons for the visual style
+const MailIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+  </svg>
+);
+
+const KeyIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
+  </svg>
+);
+
 function ConfirmEmailInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -118,121 +131,148 @@ function ConfirmEmailInner() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-300 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-8">
-        <div className="text-center mb-8">
-          <div className="text-6xl mb-4">📧</div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Verify Your Email</h1>
-          <p className="text-gray-600">We&apos;ve sent a 6-digit verification code to your email</p>
-        </div>
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap');
+        body { font-family: 'Nunito', sans-serif; }
+      `}</style>
 
-        <form onSubmit={handleVerify} className="space-y-6">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-colors text-gray-900 font-semibold placeholder:text-gray-500"
-              placeholder="Enter your email"
-              required
-              disabled={isVerifying}
-            />
+      {/* Main Background - Jungle/Sky gradient */}
+      <main className="min-h-screen bg-gradient-to-b from-[#B4AEE8] via-[#F4D9F0] to-[#A8D5BA] flex items-center justify-center p-4 relative overflow-hidden">
+
+        {/* Decorative Leaf Elements */}
+        <div className="absolute top-0 left-0 text-9xl select-none opacity-80 -translate-x-10 -translate-y-10 rotate-45">🌿</div>
+        <div className="absolute top-0 right-0 text-9xl select-none opacity-80 translate-x-10 -translate-y-10 -rotate-45">🌿</div>
+        <div className="absolute bottom-0 left-0 text-9xl select-none opacity-80 -translate-x-10 translate-y-10 -rotate-45">🌿</div>
+        <div className="absolute bottom-0 right-0 text-9xl select-none opacity-80 translate-x-10 translate-y-10 rotate-45">🌿</div>
+
+        {/* Card Container */}
+        <div className="relative w-full max-w-md mt-12">
+
+          {/* Mascot / Monkey Placeholder */}
+          <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 z-20 w-40 h-32 flex items-end justify-center">
+            <div className="relative w-32 h-32">
+              <span className="text-[100px] absolute top-2 left-2 drop-shadow-xl">🐵</span>
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2">
-              Verification Code
-            </label>
-            <input
-              type="text"
-              id="code"
-              value={code}
-              onChange={handleCodeChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-colors text-center text-2xl tracking-widest font-mono text-gray-900 font-bold placeholder:text-gray-400"
-              placeholder="000000"
-              maxLength={6}
-              required
-              disabled={isVerifying}
-            />
-            <p className="text-xs text-gray-500 mt-1 text-center">Enter the 6-digit code sent to your email</p>
+          {/* The Parchment Card */}
+          <div className="bg-[#FFF9F0] rounded-[2.5rem] p-8 pt-12 shadow-[0_20px_50px_rgba(0,0,0,0.2),0_0_0_8px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] relative z-10">
+
+            {/* Header */}
+            <div className="text-center mb-6">
+              <div className="text-6xl mb-3">📧</div>
+              <h1 className="text-3xl font-extrabold text-[#9C3877] drop-shadow-sm mb-1 tracking-tight">Verify Your Email</h1>
+              <p className="text-[#8D6E63] font-bold text-base">We&apos;ve sent a 6-digit code to your email</p>
+            </div>
+
+            <form onSubmit={handleVerify} className="space-y-4">
+
+              {/* Email Input */}
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8D6E63]">
+                  <MailIcon />
+                </div>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-12 pr-4 py-4 bg-[#FFF0D9] border-2 border-[#EBD6B5] rounded-full text-[#5D4037] placeholder-[#ACA199] font-bold shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#C490E4] focus:bg-white transition-all"
+                  disabled={isVerifying}
+                  required
+                />
+              </div>
+
+              {/* Verification Code Input */}
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8D6E63]">
+                  <KeyIcon />
+                </div>
+                <input
+                  type="text"
+                  placeholder="000000"
+                  value={code}
+                  onChange={handleCodeChange}
+                  className="w-full pl-12 pr-4 py-4 bg-[#FFF0D9] border-2 border-[#EBD6B5] rounded-full text-[#5D4037] placeholder-[#ACA199] font-bold shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#C490E4] focus:bg-white transition-all text-center text-2xl tracking-[0.5em] font-mono"
+                  maxLength={6}
+                  disabled={isVerifying}
+                  required
+                />
+              </div>
+              <p className="text-xs text-[#8D6E63] text-center font-semibold -mt-2">Enter the 6-digit code sent to your email</p>
+
+              {/* Success Message */}
+              {successMessage && (
+                <div className="bg-[#E8F5E9] border border-[#A5D6A7] text-[#2E7D32] px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
+                  <span>✅</span> {successMessage}
+                </div>
+              )}
+
+              {/* Resend Message */}
+              {resendMessage && (
+                <div className="bg-[#E3F2FD] border border-[#90CAF9] text-[#1565C0] px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
+                  <span>ℹ️</span> {resendMessage}
+                </div>
+              )}
+
+              {/* Error Message */}
+              {error && (
+                <div className="bg-[#FFE5E5] border border-[#FFBDBD] text-[#D32F2F] px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 animate-pulse">
+                  <span>⚠️</span> {error}
+                </div>
+              )}
+
+              {/* Verify Button - 3D Effect */}
+              <button
+                type="submit"
+                disabled={isVerifying || !!successMessage}
+                className="w-full bg-gradient-to-r from-[#9C27B0] via-[#E91E63] to-[#FF9800] text-white font-extrabold text-xl py-4 rounded-full shadow-[0_6px_0_rgb(123,31,162)] active:shadow-none active:translate-y-1.5 transition-all hover:brightness-110 mt-4 border-b-2 border-white/20 disabled:opacity-70"
+              >
+                {isVerifying ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Verifying...
+                  </div>
+                ) : (
+                  'Verify Email'
+                )}
+              </button>
+
+              {/* Resend Button */}
+              <button
+                type="button"
+                onClick={handleResend}
+                disabled={isResending || isVerifying || !!successMessage}
+                className="w-full bg-[#FFF0D9] border-2 border-[#EBD6B5] text-[#8D6E63] font-bold py-3 rounded-full hover:bg-[#FFE4C4] transition-all disabled:opacity-50"
+              >
+                {isResending ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-[#8D6E63] border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Resending...
+                  </div>
+                ) : (
+                  'Resend Code'
+                )}
+              </button>
+
+              {/* Footer Links */}
+              <div className="text-center pt-2 space-y-2">
+                <p className="text-[#8D6E63] font-bold text-sm">
+                  Already verified?{' '}
+                  <Link href="/login" className="text-[#8E24AA] underline decoration-2 underline-offset-2 hover:text-[#BA68C8]">
+                    Sign in
+                  </Link>
+                </p>
+                <Link href="/" className="inline-flex items-center text-[#8D6E63] hover:text-[#5D4037] text-sm font-bold">
+                  ← Back to Home
+                </Link>
+              </div>
+            </form>
           </div>
-
-          {successMessage && (
-            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">✓</span>
-                <span>{successMessage}</span>
-              </div>
-            </div>
-          )}
-
-          {resendMessage && (
-            <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg text-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">ℹ️</span>
-                <span>{resendMessage}</span>
-              </div>
-            </div>
-          )}
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={isVerifying || !!successMessage}
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-          >
-            {isVerifying ? (
-              <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                Verifying...
-              </div>
-            ) : (
-              'Verify Email'
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={handleResend}
-            disabled={isResending || isVerifying || !!successMessage}
-            className="w-full bg-white border-2 border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isResending ? (
-              <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-gray-700 border-t-transparent rounded-full animate-spin mr-2"></div>
-                Resending...
-              </div>
-            ) : (
-              'Resend Code'
-            )}
-          </button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <p className="text-gray-600 text-sm">
-            Already verified?{' '}
-            <Link href="/login" className="text-purple-600 hover:text-purple-800 font-medium">
-              Sign in
-            </Link>
-          </p>
         </div>
-
-        <div className="mt-8 text-center">
-          <Link href="/" className="inline-flex items-center text-gray-500 hover:text-gray-700 text-sm">
-            ← Back to Home
-          </Link>
-        </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 

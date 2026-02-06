@@ -13,9 +13,33 @@ interface LoginResponse {
   email: string;
 }
 
+// Icons for the visual style
+const MailIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+  </svg>
+);
+
+const LockIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+  </svg>
+);
+
+const EyeIcon = ({ open }: { open: boolean }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="#5D4037">
+    {open ? (
+      <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+    ) : (
+      <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.45-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-4.01.7l2.16 2.16C10.5 7.17 11.24 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z" />
+    )}
+  </svg>
+);
+
 function LoginInner() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -126,95 +150,138 @@ function LoginInner() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-300 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to continue learning</p>
-        </div>
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap');
+        body { font-family: 'Nunito', sans-serif; }
+      `}</style>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-colors text-gray-900 font-semibold placeholder:text-gray-500"
-              placeholder="Enter your email"
-              required
-              disabled={isLoading}
-            />
+      {/* Main Background - Jungle/Sky gradient */}
+      <main className="min-h-screen bg-gradient-to-b from-[#B4AEE8] via-[#F4D9F0] to-[#A8D5BA] flex items-center justify-center p-4 relative overflow-hidden">
+
+        {/* Decorative Leaf Elements */}
+        <div className="absolute top-0 left-0 text-9xl select-none opacity-80 -translate-x-10 -translate-y-10 rotate-45">🌿</div>
+        <div className="absolute top-0 right-0 text-9xl select-none opacity-80 translate-x-10 -translate-y-10 -rotate-45">🌿</div>
+        <div className="absolute bottom-0 left-0 text-9xl select-none opacity-80 -translate-x-10 translate-y-10 -rotate-45">🌿</div>
+        <div className="absolute bottom-0 right-0 text-9xl select-none opacity-80 translate-x-10 translate-y-10 rotate-45">🌿</div>
+
+        {/* Card Container */}
+        <div className="relative w-full max-w-md mt-12">
+
+          {/* Mascot / Monkey Placeholder */}
+          <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 z-20 w-40 h-32 flex items-end justify-center">
+            <div className="relative w-32 h-32">
+              <span className="text-[100px] absolute top-2 left-2 drop-shadow-xl">🐵</span>
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-colors text-gray-900 font-semibold placeholder:text-gray-500"
-              placeholder="Enter your password"
-              required
-              disabled={isLoading}
-            />
-          </div>
+          {/* The Parchment Card */}
+          <div className="bg-[#FFF9F0] rounded-[2.5rem] p-8 pt-12 shadow-[0_20px_50px_rgba(0,0,0,0.2),0_0_0_8px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] relative z-10">
 
-          {successMessage && (
-            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
-              {successMessage}
+            {/* Header */}
+            <div className="text-center mb-6">
+              <h1 className="text-4xl font-extrabold text-[#9C3877] drop-shadow-sm mb-1 tracking-tight">Welcome Back</h1>
+              <p className="text-[#8D6E63] font-bold text-lg">Sign in to continue learning</p>
             </div>
-          )}
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-              <p>{error}</p>
-              {needsConfirmation && (
-                <Link
-                  href={`/confirm-email?email=${encodeURIComponent(email.trim())}`}
-                  className="inline-block mt-2 text-red-800 font-semibold underline hover:text-red-900"
-                >
-                  Click here to verify your email →
-                </Link>
-              )}
-            </div>
-          )}
+            <form onSubmit={handleSubmit} className="space-y-4">
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-          >
-            {isLoading ? (
-              <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                Signing In...
+              {/* Email Input */}
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8D6E63]">
+                  <MailIcon />
+                </div>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-12 pr-4 py-4 bg-[#FFF0D9] border-2 border-[#EBD6B5] rounded-full text-[#5D4037] placeholder-[#ACA199] font-bold shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#C490E4] focus:bg-white transition-all"
+                  disabled={isLoading}
+                  required
+                />
               </div>
-            ) : (
-              'Sign In'
-            )}
-          </button>
 
-          <div className="text-center pt-4 space-y-3">
-            <Link href="/forgot-password" className="text-purple-600 hover:text-purple-800 text-sm font-medium transition-colors">
-              Forgot your password?
-            </Link>
-            <p className="text-gray-600">
-              Don&apos;t have an account?{' '}
-              <Link href="/signup" className="text-purple-600 hover:text-purple-800 font-semibold transition-colors">
-                Sign Up
-              </Link>
-            </p>
+              {/* Password Input */}
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8D6E63]">
+                  <LockIcon />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-12 pr-12 py-4 bg-[#FFF0D9] border-2 border-[#EBD6B5] rounded-full text-[#5D4037] placeholder-[#ACA199] font-bold shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#C490E4] focus:bg-white transition-all"
+                  disabled={isLoading}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 hover:scale-110 transition-transform"
+                >
+                  <EyeIcon open={showPassword} />
+                </button>
+              </div>
+
+              {/* Success Message */}
+              {successMessage && (
+                <div className="bg-[#E8F5E9] border border-[#A5D6A7] text-[#2E7D32] px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
+                  <span>✅</span> {successMessage}
+                </div>
+              )}
+
+              {/* Error Message */}
+              {error && (
+                <div className="bg-[#FFE5E5] border border-[#FFBDBD] text-[#D32F2F] px-4 py-2 rounded-xl text-sm font-bold">
+                  <div className="flex items-center gap-2">
+                    <span>⚠️</span> {error}
+                  </div>
+                  {needsConfirmation && (
+                    <Link
+                      href={`/confirm-email?email=${encodeURIComponent(email.trim())}`}
+                      className="inline-block mt-2 text-[#8E24AA] font-bold underline hover:text-[#BA68C8]"
+                    >
+                      Click here to verify your email →
+                    </Link>
+                  )}
+                </div>
+              )}
+
+              {/* Submit Button - 3D Effect */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-[#9C27B0] via-[#E91E63] to-[#FF9800] text-white font-extrabold text-xl py-4 rounded-full shadow-[0_6px_0_rgb(123,31,162)] active:shadow-none active:translate-y-1.5 transition-all hover:brightness-110 mt-4 border-b-2 border-white/20 disabled:opacity-70"
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Signing In...
+                  </div>
+                ) : (
+                  'Sign In'
+                )}
+              </button>
+
+              {/* Footer Links */}
+              <div className="text-center pt-2 space-y-2">
+                <Link href="/forgot-password" className="text-[#8E24AA] font-bold hover:text-[#BA68C8] text-sm block">
+                  Forgot your password?
+                </Link>
+                <p className="text-[#8D6E63] font-bold">
+                  Don&apos;t have an account?{' '}
+                  <Link href="/signup" className="text-[#8E24AA] underline decoration-2 underline-offset-2 hover:text-[#BA68C8]">
+                    Sign Up
+                  </Link>
+                </p>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-    </main>
+        </div>
+      </main>
+    </>
   );
 }
 
