@@ -17,13 +17,11 @@ export default function ChooseLanguageClient() {
   const [selectedSection, setSelectedSection] = useState<string>('');
   const [selectedSubsection, setSelectedSubsection] = useState<string>('');
   const [isVisible, setIsVisible] = useState(false);
-  // Track if section was pre-selected from URL (coming from dashboard)
   const [preSelectedSection, setPreSelectedSection] = useState<string>('');
 
   useEffect(() => {
     setIsVisible(true);
 
-    // Read URL parameters to set initial state
     const section = searchParams.get('section');
     const subsection = searchParams.get('subsection');
     const lang = searchParams.get('lang');
@@ -33,14 +31,13 @@ export default function ChooseLanguageClient() {
     }
     if (section) {
       setSelectedSection(section);
-      setPreSelectedSection(section); // Remember that section was pre-selected
+      setPreSelectedSection(section);
     }
     if (subsection) {
       setSelectedSubsection(subsection);
     }
   }, [searchParams]);
 
-  // Determine current step for indicator
   const getCurrentStep = () => {
     if (!selectedLanguage) return 0;
     if (!selectedSection) return 1;
@@ -51,21 +48,18 @@ export default function ChooseLanguageClient() {
   const steps = ['Language', 'Section', 'Subsection', 'Mode'];
   const currentStep = getCurrentStep();
 
-  // Get back button action based on current step
   const getBackAction = () => {
     switch (currentStep) {
-      case 0: // Language selection
-        // If came from dashboard with pre-selected section, go back to dashboard
+      case 0:
         if (preSelectedSection) return () => router.push('/students');
-        return null; // No back on first step otherwise
-      case 1: // Section selection
-        return () => setSelectedLanguage(''); // Go back to language
-      case 2: // Subsection selection
-        // If section was pre-selected, go back to language (skip section)
+        return null;
+      case 1:
+        return () => setSelectedLanguage('');
+      case 2:
         if (preSelectedSection) return () => setSelectedLanguage('');
-        return () => setSelectedSection(''); // Go back to section
-      case 3: // Mode selection
-        return () => setSelectedSubsection(''); // Go back to subsection
+        return () => setSelectedSection('');
+      case 3:
+        return () => setSelectedSubsection('');
       default:
         return null;
     }
@@ -74,29 +68,47 @@ export default function ChooseLanguageClient() {
   const backAction = getBackAction();
 
   return (
-    <main className="min-h-screen bg-warm-gradient">
+    <main className="min-h-screen bg-gradient-to-b from-[#B4AEE8] via-[#F4D9F0] to-[#A8D5BA] relative overflow-hidden">
+      {/* Background Decorations */}
+      <div className="fixed top-20 left-10 text-3xl animate-bounce z-0 opacity-60">🦋</div>
+      <div className="fixed top-40 right-16 text-3xl animate-bounce z-0 opacity-60" style={{ animationDelay: '0.5s' }}>🦋</div>
+      <div className="fixed bottom-32 left-20 text-3xl animate-bounce z-0 opacity-60" style={{ animationDelay: '1s' }}>🦋</div>
+
+      <div className="fixed top-1/4 left-5 text-4xl animate-pulse opacity-50">🍃</div>
+      <div className="fixed top-1/3 right-8 text-4xl animate-pulse opacity-50" style={{ animationDelay: '0.7s' }}>🌿</div>
+      <div className="fixed bottom-1/4 left-12 text-4xl animate-pulse opacity-50" style={{ animationDelay: '1.2s' }}>🌱</div>
+      <div className="fixed bottom-1/3 right-10 text-4xl animate-pulse opacity-50" style={{ animationDelay: '0.3s' }}>🍃</div>
+
+      <div className="fixed top-16 left-1/4 text-yellow-300 text-xl animate-ping opacity-40">✦</div>
+      <div className="fixed top-24 right-1/3 text-yellow-300 text-lg animate-ping opacity-40" style={{ animationDelay: '0.5s' }}>✦</div>
+
+      <div className="fixed top-0 left-0 text-8xl select-none opacity-70 -translate-x-6 -translate-y-6 rotate-45 z-0">🌿</div>
+      <div className="fixed top-0 right-0 text-8xl select-none opacity-70 translate-x-6 -translate-y-6 -rotate-45 z-0">🌿</div>
+      <div className="fixed bottom-0 left-0 text-8xl select-none opacity-70 -translate-x-6 translate-y-6 -rotate-45 z-0">🌿</div>
+      <div className="fixed bottom-0 right-0 text-8xl select-none opacity-70 translate-x-6 translate-y-6 rotate-45 z-0">🌿</div>
+
       {/* Top Banner */}
-      <div className="bg-indigo-600 px-6 py-4">
-        {/* Neurogati Logo - Top Left Corner */}
+      <div className="bg-gradient-to-r from-[#9C27B0] via-[#AB47BC] to-[#7B1FA2] px-6 py-4 shadow-lg relative z-10">
+        {/* Neurogati Logo */}
         <div className="flex items-center gap-3 mb-4">
           <img
             src="/neurogati.png"
             alt="Neurogati"
-            className="w-12 h-12 md:w-14 md:h-14"
+            className="w-12 h-12 md:w-14 md:h-14 drop-shadow-lg"
           />
-          <span className="text-white font-bold text-lg md:text-xl">
+          <span className="text-white font-extrabold text-lg md:text-xl drop-shadow-md">
             Neurogati
           </span>
         </div>
 
         {/* Navigation Row */}
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          {/* Back Button - Left (only show when not on first step) */}
+          {/* Back Button */}
           <div className="w-24">
             {backAction && (
               <button
                 onClick={backAction}
-                className="px-4 py-2 bg-white/20 text-white rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center gap-2"
+                className="px-4 py-2 bg-white/20 text-white rounded-full font-bold hover:bg-white/30 transition-all flex items-center gap-2 shadow-md"
               >
                 <span>←</span>
                 <span>Back</span>
@@ -104,17 +116,17 @@ export default function ChooseLanguageClient() {
             )}
           </div>
 
-          {/* Akshara - Center */}
-          <h1 className="text-3xl md:text-4xl font-bold text-white">
+          {/* Akshara Title */}
+          <h1 className="text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg">
             AksharA
           </h1>
 
-          {/* Profile and Logout Buttons - Right */}
+          {/* Profile and Logout */}
           <div className="flex items-center gap-2">
             <Link href="/students">
-              <button className="px-4 py-2 bg-white/20 text-white rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center gap-2">
+              <button className="px-4 py-2 bg-white/20 text-white rounded-full font-bold hover:bg-white/30 transition-all flex items-center gap-2 shadow-md">
                 <span>👤</span>
-                <span>Profile</span>
+                <span className="hidden sm:inline">Profile</span>
               </button>
             </Link>
             <button
@@ -122,40 +134,40 @@ export default function ChooseLanguageClient() {
                 localStorage.removeItem('aksharaUser');
                 router.push('/login');
               }}
-              className="px-4 py-2 bg-red-500/80 text-white rounded-lg font-semibold hover:bg-red-600 transition-all flex items-center gap-2"
+              className="px-4 py-2 bg-red-500 text-white rounded-full font-bold hover:bg-red-600 transition-all flex items-center gap-2 shadow-md"
             >
               <span>🚪</span>
-              <span>Logout</span>
+              <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         </div>
       </div>
 
-      <div className={`max-w-6xl mx-auto px-6 py-6 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`max-w-6xl mx-auto px-6 py-6 transition-opacity duration-500 relative z-10 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
         {/* Step Indicator */}
         <div className="flex items-center justify-center gap-1 mb-6">
           {steps.map((step, index) => (
             <div key={step} className="flex items-center gap-2">
-              <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+              <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all shadow-md ${
                 index === currentStep
-                  ? 'bg-indigo-600 text-white shadow-md'
+                  ? 'bg-gradient-to-r from-[#9C27B0] to-[#E91E63] text-white'
                   : index < currentStep
-                  ? 'bg-indigo-100 text-indigo-700'
-                  : 'bg-slate-100 text-slate-400'
+                  ? 'bg-[#FFF9F0] text-[#9C3877] border-2 border-[#EADDCA]'
+                  : 'bg-white/50 text-[#8D6E63] border-2 border-white/50'
               }`}>
                 <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                   index === currentStep
-                    ? 'bg-white text-indigo-600'
+                    ? 'bg-white text-[#9C27B0]'
                     : index < currentStep
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-slate-300 text-white'
+                    ? 'bg-[#9C27B0] text-white'
+                    : 'bg-[#EBD6B5] text-[#8D6E63]'
                 }`}>
-                  {index < currentStep ? '\u2713' : index + 1}
+                  {index < currentStep ? '✓' : index + 1}
                 </span>
                 <span className="hidden sm:inline">{step}</span>
               </div>
               {index < steps.length - 1 && (
-                <div className={`w-8 h-0.5 ${index < currentStep ? 'bg-indigo-400' : 'bg-slate-200'}`} />
+                <div className={`w-8 h-1 rounded-full ${index < currentStep ? 'bg-[#9C27B0]' : 'bg-white/50'}`} />
               )}
             </div>
           ))}
@@ -165,23 +177,23 @@ export default function ChooseLanguageClient() {
           /* Language Selection */
           <div>
             <div className="text-center mb-6">
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-2">
+              <h1 className="text-4xl md:text-5xl font-extrabold text-[#9C3877] mb-2 drop-shadow-sm">
                 Choose Your Language
               </h1>
-              <p className="text-lg text-slate-600">
+              <p className="text-lg font-bold text-[#8D6E63]">
                 Select a language to start learning
               </p>
             </div>
 
             <div className="max-w-lg mx-auto">
-              <div className="bg-white rounded-2xl shadow-lg p-8">
-                <label className="block text-slate-800 font-bold text-xl mb-4 text-center">
-                  Select Language
+              <div className="bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-8">
+                <label className="block text-[#9C3877] font-extrabold text-xl mb-4 text-center">
+                  🌍 Select Language
                 </label>
                 <select
                   value={selectedLanguage}
                   onChange={(e) => e.target.value && setSelectedLanguage(e.target.value)}
-                  className="w-full p-4 bg-white border-2 border-slate-200 rounded-xl text-slate-800 font-bold text-xl focus:border-indigo-500 focus:outline-none transition-all duration-300 cursor-pointer"
+                  className="w-full p-4 bg-[#FFF0D9] border-2 border-[#EBD6B5] rounded-full text-[#5D4037] font-bold text-xl focus:border-[#C490E4] focus:outline-none focus:bg-white transition-all duration-300 cursor-pointer"
                 >
                   <option value="">Choose a language...</option>
                   {LANGUAGES.map((lang) => (
@@ -198,13 +210,13 @@ export default function ChooseLanguageClient() {
             </div>
           </div>
         ) : !selectedSection ? (
-          /* Section Selection (Writing or Reading) */
+          /* Section Selection */
           <div>
             <div className="text-center mb-6">
-              <h1 className="text-4xl font-bold text-slate-800 mb-2">
+              <h1 className="text-4xl font-extrabold text-[#9C3877] mb-2 drop-shadow-sm">
                 Choose a Section
               </h1>
-              <p className="text-lg text-slate-600">
+              <p className="text-lg font-bold text-[#8D6E63]">
                 What would you like to practice?
               </p>
             </div>
@@ -213,25 +225,25 @@ export default function ChooseLanguageClient() {
               {/* Writing Section */}
               <div
                 onClick={() => setSelectedSection('writing')}
-                className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-indigo-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
               >
-                <div className="text-5xl mb-4 text-center">✍️</div>
-                <h3 className="text-2xl font-bold mb-4 text-center text-indigo-600">Writing</h3>
-                <ul className="text-base space-y-2 text-slate-600">
+                <div className="text-6xl mb-4 text-center">✍️</div>
+                <h3 className="text-2xl font-extrabold mb-4 text-center text-[#9C27B0]">Writing</h3>
+                <ul className="text-base space-y-2 text-[#5D4037] font-semibold">
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#9C27B0] rounded-full"></span>
                     Practice writing letters
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#9C27B0] rounded-full"></span>
                     AI handwriting recognition
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#9C27B0] rounded-full"></span>
                     Instant feedback
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#9C27B0] rounded-full"></span>
                     Track your progress
                   </li>
                 </ul>
@@ -240,25 +252,25 @@ export default function ChooseLanguageClient() {
               {/* Reading Section */}
               <div
                 onClick={() => setSelectedSection('reading')}
-                className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-violet-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
               >
-                <div className="text-5xl mb-4 text-center">🎤</div>
-                <h3 className="text-2xl font-bold mb-4 text-center text-violet-600">Reading</h3>
-                <ul className="text-base space-y-2 text-slate-600">
+                <div className="text-6xl mb-4 text-center">🎤</div>
+                <h3 className="text-2xl font-extrabold mb-4 text-center text-[#E91E63]">Reading</h3>
+                <ul className="text-base space-y-2 text-[#5D4037] font-semibold">
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-violet-500 rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#E91E63] rounded-full"></span>
                     Practice pronunciation
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-violet-500 rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#E91E63] rounded-full"></span>
                     Voice recognition
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-violet-500 rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#E91E63] rounded-full"></span>
                     Listen and repeat
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-violet-500 rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#E91E63] rounded-full"></span>
                     Improve reading skills
                   </li>
                 </ul>
@@ -269,12 +281,9 @@ export default function ChooseLanguageClient() {
           /* Subsection Selection */
           <div>
             <div className="text-center mb-6">
-              <h1 className="text-4xl font-bold text-slate-800 mb-2">
+              <h1 className="text-4xl font-extrabold text-[#9C3877] mb-2 drop-shadow-sm">
                 Choose What to Practice
               </h1>
-              <p className="text-lg text-slate-600">
-                {selectedSection === 'writing' ? 'Writing Practice Options' : 'Speaking Practice Options'}
-              </p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
@@ -283,46 +292,46 @@ export default function ChooseLanguageClient() {
                   <>
                     <div
                       onClick={() => setSelectedSubsection('capital')}
-                      className="group bg-white rounded-2xl shadow-lg p-6 border-t-4 border-violet-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                      className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
                     >
-                      <div className="text-5xl mb-3 text-center font-bold text-violet-600">அ</div>
-                      <h3 className="text-xl font-bold mb-2 text-center text-slate-800">Vowels</h3>
-                      <p className="text-center text-slate-500 text-sm">உயிரெழுத்துக்கள்</p>
+                      <div className="text-5xl mb-3 text-center font-bold text-[#9C27B0]">அ</div>
+                      <h3 className="text-xl font-extrabold mb-2 text-center text-[#9C3877]">Vowels</h3>
+                      <p className="text-center text-sm font-bold text-[#8D6E63]">உயிரெழுத்துக்கள்</p>
                     </div>
                     <div
                       onClick={() => setSelectedSubsection('small')}
-                      className="group bg-white rounded-2xl shadow-lg p-6 border-t-4 border-emerald-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                      className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
                     >
-                      <div className="text-5xl mb-3 text-center font-bold text-emerald-600">க</div>
-                      <h3 className="text-xl font-bold mb-2 text-center text-slate-800">Consonants</h3>
-                      <p className="text-center text-slate-500 text-sm">மெய்யெழுத்துக்கள்</p>
+                      <div className="text-5xl mb-3 text-center font-bold text-[#4CAF50]">க</div>
+                      <h3 className="text-xl font-extrabold mb-2 text-center text-[#9C3877]">Consonants</h3>
+                      <p className="text-center text-sm font-bold text-[#8D6E63]">மெய்யெழுத்துக்கள்</p>
                     </div>
                   </>
                 ) : (
                   <>
                     <div
                       onClick={() => setSelectedSubsection('capital')}
-                      className="group bg-white rounded-2xl shadow-lg p-6 border-t-4 border-violet-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                      className="group bg-gradient-to-br from-[#9C27B0] to-[#7B1FA2] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15)] border-4 border-white/30 p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
                     >
-                      <div className="text-5xl mb-3 text-center font-bold text-violet-600">ABC</div>
-                      <h3 className="text-xl font-bold mb-2 text-center text-slate-800">Capital Alphabets</h3>
-                      <p className="text-center text-slate-500 text-sm">A to Z</p>
+                      <div className="text-5xl mb-3 text-center font-bold text-white">ABC</div>
+                      <h3 className="text-xl font-extrabold mb-2 text-center text-white">Capital Alphabets</h3>
+                      <p className="text-center text-sm font-bold text-white/80">A to Z</p>
                     </div>
                     <div
                       onClick={() => setSelectedSubsection('small')}
-                      className="group bg-white rounded-2xl shadow-lg p-6 border-t-4 border-emerald-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                      className="group bg-gradient-to-br from-[#4CAF50] to-[#2E7D32] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15)] border-4 border-white/30 p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
                     >
-                      <div className="text-5xl mb-3 text-center font-bold text-emerald-600">abc</div>
-                      <h3 className="text-xl font-bold mb-2 text-center text-slate-800">Small Alphabets</h3>
-                      <p className="text-center text-slate-500 text-sm">a to z</p>
+                      <div className="text-5xl mb-3 text-center font-bold text-white">abc</div>
+                      <h3 className="text-xl font-extrabold mb-2 text-center text-white">Small Alphabets</h3>
+                      <p className="text-center text-sm font-bold text-white/80">a to z</p>
                     </div>
                     <div
                       onClick={() => setSelectedSubsection('numbers')}
-                      className="group bg-white rounded-2xl shadow-lg p-6 border-t-4 border-amber-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                      className="group bg-gradient-to-br from-[#FF9800] to-[#F57C00] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15)] border-4 border-white/30 p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
                     >
-                      <div className="text-5xl mb-3 text-center font-bold text-amber-600">123</div>
-                      <h3 className="text-xl font-bold mb-2 text-center text-slate-800">Numbers</h3>
-                      <p className="text-center text-slate-500 text-sm">0 to 9</p>
+                      <div className="text-5xl mb-3 text-center font-bold text-white">123</div>
+                      <h3 className="text-xl font-extrabold mb-2 text-center text-white">Numbers</h3>
+                      <p className="text-center text-sm font-bold text-white/80">0 to 9</p>
                     </div>
                   </>
                 )
@@ -331,45 +340,41 @@ export default function ChooseLanguageClient() {
                   <>
                     <div
                       onClick={() => setSelectedSubsection('learn')}
-                      className="group bg-white rounded-2xl shadow-lg p-6 border-t-4 border-indigo-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                      className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
                     >
                       <div className="text-5xl mb-3 text-center">🎓</div>
-                      <h3 className="text-xl font-bold mb-2 text-center text-slate-800">Learn Letters</h3>
-                      <p className="text-center text-slate-500 text-sm">Interactive Learning</p>
+                      <h3 className="text-xl font-extrabold mb-2 text-center text-[#9C3877]">Learn Letters</h3>
+                      <p className="text-center text-sm font-bold text-[#8D6E63]">Interactive Learning</p>
                     </div>
                     <div
                       onClick={() => setSelectedSubsection('alphabets')}
-                      className="group bg-white rounded-2xl shadow-lg p-6 border-t-4 border-violet-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                      className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
                     >
-                      <div className="text-5xl mb-3 text-center font-bold text-violet-600">அ</div>
-                      <h3 className="text-xl font-bold mb-2 text-center text-slate-800">Tamil Letters</h3>
-                      <p className="text-center text-slate-500 text-sm">Vowels & Consonants</p>
+                      <div className="text-5xl mb-3 text-center font-bold text-[#9C27B0]">அ</div>
+                      <h3 className="text-xl font-extrabold mb-2 text-center text-[#9C3877]">Tamil Letters</h3>
+                      <p className="text-center text-sm font-bold text-[#8D6E63]">Vowels & Consonants</p>
                     </div>
                   </>
                 ) : (
-                  /* English Reading - Only Alphabets */
                   <div
                     onClick={() => setSelectedSubsection('alphabets')}
-                    className="group bg-white rounded-2xl shadow-lg p-6 border-t-4 border-violet-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                    className="group bg-gradient-to-br from-[#E91E63] to-[#C2185B] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15)] border-4 border-white/30 p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
                   >
-                    <div className="text-5xl mb-3 text-center font-bold text-violet-600">ABC</div>
-                    <h3 className="text-xl font-bold mb-2 text-center text-slate-800">Alphabets</h3>
-                    <p className="text-center text-slate-500 text-sm">A to Z</p>
+                    <div className="text-5xl mb-3 text-center font-bold text-white">ABC</div>
+                    <h3 className="text-xl font-extrabold mb-2 text-center text-white">Alphabets</h3>
+                    <p className="text-center text-sm font-bold text-white/80">A to Z</p>
                   </div>
                 )
               )}
             </div>
           </div>
         ) : (
-          /* Mode Selection (Practice or Test) */
+          /* Mode Selection */
           <div>
             <div className="text-center mb-6">
-              <h1 className="text-4xl font-bold text-slate-800 mb-2">
+              <h1 className="text-4xl font-extrabold text-[#9C3877] mb-2 drop-shadow-sm">
                 Choose a Mode
               </h1>
-              <p className="text-lg text-slate-600">
-                How would you like to learn?
-              </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -387,24 +392,24 @@ export default function ChooseLanguageClient() {
                       : `/reading/practice?lang=${selectedLanguage}`
                     : `/reading/practice?lang=${selectedLanguage}`
               }>
-                <div className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-emerald-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer">
-                  <div className="text-5xl mb-4 text-center">✏️</div>
-                  <h3 className="text-2xl font-bold mb-4 text-center text-emerald-600">Practice</h3>
-                  <ul className="text-base space-y-2 text-slate-600">
+                <div className="group bg-gradient-to-br from-[#4CAF50] to-[#2E7D32] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15)] border-4 border-white/30 p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer">
+                  <div className="text-6xl mb-4 text-center">✏️</div>
+                  <h3 className="text-2xl font-extrabold mb-4 text-center text-white">Practice</h3>
+                  <ul className="text-base space-y-2 text-white/90 font-semibold">
                     <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                      <span className="w-2 h-2 bg-white rounded-full"></span>
                       Learn at your own pace
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                      <span className="w-2 h-2 bg-white rounded-full"></span>
                       Instant feedback
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                      <span className="w-2 h-2 bg-white rounded-full"></span>
                       No pressure
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                      <span className="w-2 h-2 bg-white rounded-full"></span>
                       Repeat as many times
                     </li>
                   </ul>
@@ -425,24 +430,24 @@ export default function ChooseLanguageClient() {
                       : `/reading/test?lang=${selectedLanguage}`
                     : `/reading/test?lang=${selectedLanguage}`
               }>
-                <div className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-amber-500 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer">
-                  <div className="text-5xl mb-4 text-center">📝</div>
-                  <h3 className="text-2xl font-bold mb-4 text-center text-amber-600">Test</h3>
-                  <ul className="text-base space-y-2 text-slate-600">
+                <div className="group bg-gradient-to-br from-[#FF9800] to-[#F57C00] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15)] border-4 border-white/30 p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer">
+                  <div className="text-6xl mb-4 text-center">📝</div>
+                  <h3 className="text-2xl font-extrabold mb-4 text-center text-white">Test</h3>
+                  <ul className="text-base space-y-2 text-white/90 font-semibold">
                     <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                      <span className="w-2 h-2 bg-white rounded-full"></span>
                       Test your knowledge
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                      <span className="w-2 h-2 bg-white rounded-full"></span>
                       Single attempt per letter
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                      <span className="w-2 h-2 bg-white rounded-full"></span>
                       Score tracking
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                      <span className="w-2 h-2 bg-white rounded-full"></span>
                       Corrected tests for mistakes
                     </li>
                   </ul>

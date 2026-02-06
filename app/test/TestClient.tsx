@@ -261,17 +261,17 @@ export default function TestClient() {
         <div className="bg-white rounded-2xl shadow-lg p-3 mb-2 flex-shrink-0">
           <div className="flex justify-between items-center">
             <div className="text-center flex-1">
-              <p className="text-gray-600 text-sm mb-0.5">Current Letter</p>
+              <p className="text-sm mb-0.5" style={{ color: '#FFB343' }}>Current Letter</p>
               <p className="text-5xl font-bold text-amber-600">{currentLetter}</p>
             </div>
             <div className="text-center flex-1">
-              <p className="text-gray-600 text-sm mb-0.5">Progress</p>
+              <p className="text-sm mb-0.5" style={{ color: '#FFB343' }}>Progress</p>
               <p className="text-2xl font-bold text-slate-600">
                 {currentIndex + 1} / {ALPHABETS.length}
               </p>
             </div>
             <div className="text-center flex-1">
-              <p className="text-gray-600 text-sm mb-0.5">Score</p>
+              <p className="text-sm mb-0.5" style={{ color: '#FFB343' }}>Score</p>
               <p className="text-3xl font-bold text-green-600">
                 {score}
               </p>
@@ -286,7 +286,7 @@ export default function TestClient() {
               <div className="flex items-center justify-between max-w-md mx-auto">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-gray-700">⌨️ Keyboard Drawing Mode</span>
-                  <span className="text-xs text-gray-500">(Hold W to draw)</span>
+                  <span className="text-xs" style={{ color: '#FFB343' }}>(Hold W to draw)</span>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
@@ -308,7 +308,7 @@ export default function TestClient() {
             {modelError ? (
               <p className="text-red-600 text-sm">{modelError}</p>
             ) : modelReady ? (
-              <p className="text-gray-600 text-sm">Draw carefully - single attempt only!</p>
+              <p className="text-sm" style={{ color: '#FFB343' }}>Draw carefully - single attempt only!</p>
             ) : (
               <p className="text-amber-600 text-sm">Loading AI model...</p>
             )}
@@ -336,8 +336,8 @@ export default function TestClient() {
               isEnabled={!isProcessing && modelReady && !modelError}
               keyboardDrawingEnabled={keyboardDrawingEnabled}
               isWKeyPressed={isWKeyPressed}
-              width={language === 'ta' ? 1200 : 400}
-              height={280}
+              width={language === 'ta' ? 1200 : 550}
+              height={420}
             />
           </div>
 
@@ -354,7 +354,7 @@ export default function TestClient() {
           {isProcessing && (
             <div className="text-center mt-2 flex-shrink-0">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-4 border-amber-600"></div>
-              <p className="text-gray-600 text-sm mt-1">Checking your answer...</p>
+              <p className="text-sm mt-1" style={{ color: '#FFB343' }}>Checking your answer...</p>
             </div>
           )}
         </div>

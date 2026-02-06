@@ -242,17 +242,17 @@ export default function CorrectedTestNumbersPage() {
         <div className="bg-white rounded-xl shadow-2xl p-6 mb-8">
           <div className="flex justify-between items-center">
             <div className="text-center flex-1">
-              <p className="text-gray-600 text-lg mb-1">Current Number</p>
+              <p className="text-lg mb-1" style={{ color: '#FFB343' }}>Current Number</p>
               <p className="text-8xl font-bold text-amber-600">{currentNumber}</p>
             </div>
             <div className="text-center flex-1">
-              <p className="text-gray-600 text-lg mb-1">Progress</p>
+              <p className="text-lg mb-1" style={{ color: '#FFB343' }}>Progress</p>
               <p className="text-4xl font-bold text-slate-600">
                 {currentIndex + 1} / {testNumbers.length}
               </p>
             </div>
             <div className="text-center flex-1">
-              <p className="text-gray-600 text-lg mb-1">Score</p>
+              <p className="text-lg mb-1" style={{ color: '#FFB343' }}>Score</p>
               <p className="text-6xl font-bold text-green-600">
                 {score}
               </p>
@@ -267,7 +267,7 @@ export default function CorrectedTestNumbersPage() {
               <div className="flex items-center justify-between max-w-md mx-auto">
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-semibold text-gray-700">⌨️ Keyboard Drawing Mode</span>
-                  <span className="text-sm text-gray-500">(Hold W to draw)</span>
+                  <span className="text-sm" style={{ color: '#FFB343' }}>(Hold W to draw)</span>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
@@ -289,7 +289,7 @@ export default function CorrectedTestNumbersPage() {
             {modelError ? (
               <p className="text-red-600">{modelError}</p>
             ) : modelReady ? (
-              <p className="text-gray-600">Take your time and write carefully!</p>
+              <p style={{ color: '#FFB343' }}>Take your time and write carefully!</p>
             ) : (
               <p className="text-amber-600">Loading AI model...</p>
             )}

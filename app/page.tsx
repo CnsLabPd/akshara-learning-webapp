@@ -1,100 +1,123 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Home() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
   return (
-    <main className="h-screen bg-warm-gradient flex flex-col overflow-hidden">
-      {/* Top Banner */}
-      <div className="bg-indigo-600 rounded-b-3xl px-6 pt-5 pb-10 flex-shrink-0">
-        {/* Neurogati Logo */}
-        <div className="flex items-center gap-3 mb-4">
+    <main className="min-h-[100svh] w-full relative overflow-hidden bg-[#0f2a44]">
+
+      {/* Background layer 1: blurred "cover" to fill the sides
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "url('/homepage-bg.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          filter: 'blur(18px)',
+          transform: 'scale(1.08)',
+          opacity: 0.85,
+        }}
+      /> */}
+
+      {/* Background layer 2: main image (no cropping) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "url('/homepage-bg_test.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          maskImage: 'linear-gradient(to top, rgba(165, 226, 23, 0) 0%, rgb(13, 207, 233) 100%)', // Mask applied from bottom
+    WebkitMaskImage: 'linear-gradient(to top, rgba(155, 202, 27, 0) 0%, rgb(18, 226, 192) 100%)', // For WebKit-based browsers like Safari
+        }}
+      />
+
+      {/* Optional very light dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/10 z-[5] pointer-events-none" />
+
+      {/* Neurogati Logo - Top Left */}
+      <div className="absolute top-4 left-4 md:top-6 md:left-6 z-50">
+        <div className="bg-black/80 rounded-xl px-4 py-2 flex items-center gap-3 backdrop-blur-sm">
           <img
             src="/neurogati.png"
             alt="Neurogati"
-            className="w-12 h-12 md:w-14 md:h-14"
+            className="w-10 h-10 md:w-12 md:h-12"
           />
-          <span className="text-white font-bold text-lg md:text-xl">
+          <span className="text-white font-extrabold text-base md:text-xl">
             Neurogati
           </span>
         </div>
-
-        {/* Hero Section */}
-        <div className={`max-w-6xl mx-auto text-center transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-2">
-            AksharA
-          </h1>
-          <h2 className="text-xl md:text-2xl font-bold text-indigo-100 mb-3">
-            AI-Powered Language Learning
-          </h2>
-
-          <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-full px-4 py-2 mb-3">
-            <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></div>
-            <span className="text-white font-semibold text-sm md:text-base">Assistive Technology Platform</span>
-          </div>
-
-          <p className="text-sm md:text-base text-indigo-200">
-            Interactive handwriting recognition &middot; Real-time feedback &middot; Personalized learning paths
-          </p>
-        </div>
       </div>
 
-      {/* Content */}
-      <div className={`max-w-6xl mx-auto px-6 -mt-6 flex-1 flex flex-col justify-center transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-        {/* Features Grid */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="bg-white rounded-2xl shadow-lg p-4 hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
-            <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-xl mb-2">🧠</div>
-            <h3 className="text-slate-800 font-bold text-sm md:text-base mb-1">AI Recognition</h3>
-            <p className="text-slate-600 text-xs md:text-sm">Neural networks analyze handwriting in real-time</p>
-          </div>
-          <div className="bg-white rounded-2xl shadow-lg p-4 hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
-            <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center text-xl mb-2">⚡</div>
-            <h3 className="text-slate-800 font-bold text-sm md:text-base mb-1">Instant Feedback</h3>
-            <p className="text-slate-600 text-xs md:text-sm">Get immediate corrections and guidance</p>
-          </div>
-          <div className="bg-white rounded-2xl shadow-lg p-4 hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center text-xl mb-2">🎯</div>
-            <h3 className="text-slate-800 font-bold text-sm md:text-base mb-1">Adaptive Learning</h3>
-            <p className="text-slate-600 text-xs md:text-sm">Personalized curriculum for each child</p>
-          </div>
-        </div>
-
-        {/* CTA Button */}
-        <div className="text-center mb-6">
-          <Link href="/signup">
-            <button className="bg-indigo-600 hover:bg-indigo-700 hover:scale-105 text-white font-bold py-4 px-10 rounded-xl text-xl md:text-2xl transition-all duration-300 shadow-lg hover:shadow-xl">
-              Let&apos;s Learn!
-            </button>
-          </Link>
-        </div>
-
-        {/* Preview Section */}
-        <div className="bg-white rounded-2xl shadow-lg p-5 max-w-3xl mx-auto w-full">
-          <h3 className="text-slate-800 font-bold text-lg mb-4 text-center">Experience the Magic</h3>
-          <div className="grid grid-cols-4 gap-4">
-            {['A', 'B', 'C', 'D'].map((letter) => (
-              <Link href="/choose-language" key={letter}>
-                <div
-                  className="bg-indigo-50 rounded-2xl p-4 text-center hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
-                >
-                  <div className="text-4xl md:text-5xl font-bold text-indigo-600 mb-1">
-                    {letter}
-                  </div>
-                  <div className="w-full h-1 bg-indigo-200 rounded-full"></div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+      {/* LET'S LEARN BUTTON */}
+      <div className="absolute top-[76%] md:top-[22%] left-1/2 -translate-x-1/2 z-40">
+        <Link href="/signup">
+          <button className="lets-learn-btn">
+            <span className="btn-text">Read Right! Write Right!</span>
+            <span className="btn-sparkle">✨</span>
+          </button>
+        </Link>
       </div>
+
+      <style jsx>{`
+        .lets-learn-btn {
+          position: relative;
+          background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 30%, #ff69b4 70%, #a855f7 100%);
+          background-size: 200% 200%;
+          animation: gradientShift 3s ease infinite;
+          color: white;
+          font-weight: bold;
+          padding: 1.2rem 4rem;
+          border-radius: 9999px;
+          font-size: 1.8rem;
+          box-shadow: 0 10px 40px rgba(255, 105, 180, 0.5),
+            0 0 0 5px rgba(255, 255, 255, 0.7),
+            inset 0 -4px 0 rgba(0, 0, 0, 0.15);
+          transition: all 0.3s ease;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .btn-sparkle {
+          animation: sparkleRotate 2s linear infinite;
+          font-size: 1.5rem;
+        }
+
+        @keyframes sparkleRotate {
+          0% { transform: rotate(0deg) scale(1); }
+          50% { transform: rotate(180deg) scale(1.3); }
+          100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .lets-learn-btn:hover {
+          transform: scale(1.08) translateY(-4px);
+          box-shadow: 0 20px 50px rgba(255, 105, 180, 0.6),
+            0 0 0 7px rgba(255, 255, 255, 0.9),
+            0 0 40px rgba(255, 105, 180, 0.5),
+            inset 0 -4px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .lets-learn-btn:active {
+          transform: scale(1.04) translateY(-2px);
+        }
+
+        @keyframes gradientShift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        @media (max-width: 768px) {
+          .lets-learn-btn {
+            padding: 0.9rem 2.5rem;
+            font-size: 1.3rem;
+          }
+        }
+      `}</style>
     </main>
   );
 }

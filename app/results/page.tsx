@@ -72,7 +72,7 @@ export default function ResultsPage() {
       <div className="bg-indigo-600 px-8 py-6 mb-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold text-white text-center">Test Results</h1>
-          <p className="text-xl text-indigo-200 text-center mt-1">Let&apos;s see how you did!</p>
+          <p className="text-xl text-center mt-1" style={{ color: '#FFB343' }}>Let&apos;s see how you did!</p>
         </div>
       </div>
 
@@ -104,7 +104,7 @@ export default function ResultsPage() {
               <p className="text-5xl font-bold text-slate-800">
                 {results.score} / {results.total}
               </p>
-              <p className="text-xl text-slate-600 mt-2">{percentage}% Correct</p>
+              <p className="text-xl mt-2" style={{ color: '#FFB343' }}>{percentage}% Correct</p>
             </div>
           )}
 
@@ -179,7 +179,7 @@ export default function ResultsPage() {
 
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
           <h3 className="text-xl font-bold text-slate-800 mb-3">What&apos;s Next?</h3>
-          <ul className="list-disc list-inside space-y-2 text-slate-600 text-lg">
+          <ul className="list-disc list-inside space-y-2 text-lg" style={{ color: '#FFB343' }}>
             {results.wrongAnswers.length > 0 ? (
               <>
                 <li>Take the Corrected Test to practice your mistakes</li>
