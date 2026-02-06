@@ -136,9 +136,9 @@ export default function ResultsPage() {
           )}
 
           <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <Link href="/">
+            <Link href="/students">
               <button className="w-full md:w-auto px-8 py-4 bg-indigo-600 text-white rounded-xl font-bold text-lg hover:bg-indigo-700 transition-colors shadow-lg">
-                Home
+                Profile
               </button>
             </Link>
 

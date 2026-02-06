@@ -121,7 +121,7 @@ export default function PracticeNumbersClient() {
         if (recognized === expected && confidence >= characterRecognizer.getConfidenceThreshold(result.letter)) {
           return {
             isCorrect: true,
-            feedback: `Perfect! Correctly wrote ${expected}!`
+            feedback: `Correct!`
           };
         }
 
@@ -145,22 +145,14 @@ export default function PracticeNumbersClient() {
         if (mapping && mapping.numbers.includes(expected) && confidence >= mapping.minConfidence) {
           return {
             isCorrect: true,
-            feedback: `Good! Recognized as ${recognized}, which looks like ${expected}!`
+            feedback: `Correct!`
           };
         }
 
-        // Check if recognized is another number
-        if ('0123456789'.includes(recognized) && confidence >= characterRecognizer.getConfidenceThreshold(result.letter)) {
-          return {
-            isCorrect: false,
-            feedback: `Try again! You wrote ${recognized}, but expected ${expected}`
-          };
-        }
-
-        // Not recognized or low confidence
+        // Check if recognized is another number or not recognized
         return {
           isCorrect: false,
-          feedback: `Try again! Draw the number ${expected}. AI saw: ${recognized}`
+          feedback: `Try again! Draw the number ${expected}`
         };
       };
 
@@ -374,7 +366,7 @@ export default function PracticeNumbersClient() {
           {feedback && (
             <div
               className={`text-center p-2 rounded-lg mb-2 flex-shrink-0 ${
-                feedback.includes('correct') || feedback.includes('Great')
+                feedback.includes('Correct')
                   ? 'bg-green-100 text-green-800'
                   : feedback.includes('Try again')
                   ? 'bg-yellow-100 text-yellow-800'
@@ -385,17 +377,6 @@ export default function PracticeNumbersClient() {
             </div>
           )}
 
-          {recognizedOutput && (
-            <div className="text-center p-2 rounded-lg mb-2 bg-purple-100 border-2 border-purple-300 flex-shrink-0">
-              <p className="text-gray-700 text-sm">
-                <span className="font-semibold">Model Recognized:</span>{' '}
-                <span className="text-lg font-bold text-purple-700">&quot;{recognizedOutput}&quot;</span>
-                <span className="text-xs text-gray-600 ml-2">
-                  Expected: <span className="font-semibold text-emerald-600">{currentNumber}</span>
-                </span>
-              </p>
-            </div>
-          )}
 
           {isProcessing && (
             <div className="text-center mt-2 flex-shrink-0">
