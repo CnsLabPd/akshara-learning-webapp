@@ -7,11 +7,10 @@ export default function Home() {
     <main className="min-h-[100svh] w-full relative overflow-hidden bg-[#0f2a44]">
       {/* Background layer 2: main image */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="homepage-bg absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: "url('/homepage-bg_test.png')",
           backgroundSize: 'cover',
-          backgroundPosition: 'top', // ✅ better for mobile tall screens
           backgroundRepeat: 'no-repeat',
           maskImage:
             'linear-gradient(to top, rgba(165, 226, 23, 0) 0%, rgb(13, 207, 233) 100%)',
@@ -24,7 +23,7 @@ export default function Home() {
       <div className="absolute inset-0 bg-black/10 z-[5] pointer-events-none" />
 
       {/* Neurogati Logo - Top Left */}
-      <div className="absolute top-3 left-3 md:top-6 md:left-6 z-50">
+      <div className="logo-wrap absolute z-50">
         <div className="bg-black/80 rounded-xl px-3 py-2 md:px-4 md:py-2 flex items-center gap-2 md:gap-3 backdrop-blur-sm">
           <img
             src="/neurogati.png"
@@ -38,8 +37,7 @@ export default function Home() {
       </div>
 
       {/* LET'S LEARN BUTTON */}
-      {/* ✅ Mobile: bottom. Desktop: moved down so it NEVER overlaps "Akshara" title */}
-      <div className="absolute inset-x-0 bottom-10 sm:bottom-12 md:top-[30%] lg:top-[32%] md:bottom-auto flex justify-center px-4 z-40">
+      <div className="cta-wrap absolute inset-x-0 flex justify-center px-4 z-40">
         <Link href="/signup" className="w-full max-w-[520px] flex justify-center">
           <button className="lets-learn-btn w-full">
             <span className="btn-text">Read Right! Write Right!</span>
@@ -49,10 +47,44 @@ export default function Home() {
       </div>
 
       <style jsx>{`
+        .homepage-bg {
+          background-position: top;
+        }
+
+        /* ✅ Safe area support (iOS notch + home bar) */
+        .logo-wrap {
+          top: calc(env(safe-area-inset-top, 0px) + 12px);
+          left: calc(env(safe-area-inset-left, 0px) + 12px);
+        }
+
+        .cta-wrap {
+          bottom: calc(env(safe-area-inset-bottom, 0px) + 40px);
+        }
+
+        @media (min-width: 768px) {
+          .homepage-bg {
+            background-position: center;
+          }
+          .logo-wrap {
+            top: calc(env(safe-area-inset-top, 0px) + 24px);
+            left: calc(env(safe-area-inset-left, 0px) + 24px);
+          }
+          .cta-wrap {
+            top: 30%;
+            bottom: auto;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .cta-wrap {
+            top: 32%;
+          }
+        }
+
         .lets-learn-btn {
           position: relative;
           width: 100%;
-          max-width: 520px; /* ✅ prevents huge pill on wide screens */
+          max-width: 520px;
           background: linear-gradient(
             135deg,
             #ff6b6b 0%,
@@ -80,7 +112,6 @@ export default function Home() {
           text-align: center;
         }
 
-        /* ✅ Keep text on one line for most screens */
         .btn-text {
           white-space: nowrap;
         }
@@ -127,13 +158,11 @@ export default function Home() {
           }
         }
 
-        /* ✅ Mobile tuning */
         @media (max-width: 768px) {
           .lets-learn-btn {
             padding: 0.95rem 1.2rem;
             font-size: 1.25rem;
           }
-          /* ✅ Allow wrap only if needed on very small screens */
           .btn-text {
             white-space: normal;
             line-height: 1.15;
