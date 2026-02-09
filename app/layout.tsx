@@ -3,7 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "AksharA - Learn to Write English Alphabets",
-  description: "An interactive web app for children to learn English alphabet writing using AI-powered handwriting recognition",
+  description:
+    "An interactive web app for children to learn English alphabet writing using AI-powered handwriting recognition",
 };
 
 export default function RootLayout({
@@ -13,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className="antialiased min-h-[100svh] w-full overflow-x-hidden">
         {children}
       </body>
     </html>

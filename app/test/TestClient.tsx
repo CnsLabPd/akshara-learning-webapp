@@ -236,9 +236,6 @@ export default function TestClient() {
             <p className="text-2xl text-rose-300 font-semibold">
               {wrongCaseDetected ? 'Remember: Write CAPITAL letters!' : 'Moving to next letter...'}
             </p>
-            {recognizedOutput && (
-              <p className="text-xl text-amber-300 mt-2">AI recognized: {recognizedOutput}</p>
-            )}
           </div>
         </div>
       )}
