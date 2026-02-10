@@ -10,7 +10,6 @@ export default function Home() {
         className="homepage-bg absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: "url('/homepage-bg_test.png')",
-          backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           maskImage:
             'linear-gradient(to top, rgba(165, 226, 23, 0) 0%, rgb(13, 207, 233) 100%)',
@@ -47,11 +46,24 @@ export default function Home() {
       </div>
 
       <style jsx>{`
+        /* ===== Background handling ===== */
+
+        /* Mobile FIRST: show full image, no cropping */
         .homepage-bg {
-          background-position: top;
+          background-size: contain;
+          background-position: top center;
+          background-color: #0f2a44; /* fills empty space */
         }
 
-        /* ✅ Safe area support (iOS notch + home bar) */
+        /* Tablet & Desktop: fill screen nicely */
+        @media (min-width: 768px) {
+          .homepage-bg {
+            background-size: cover;
+            background-position: center;
+          }
+        }
+
+        /* ===== Safe area support (iOS notch) ===== */
         .logo-wrap {
           top: calc(env(safe-area-inset-top, 0px) + 12px);
           left: calc(env(safe-area-inset-left, 0px) + 12px);
@@ -63,16 +75,12 @@ export default function Home() {
         }
 
         @media (min-width: 768px) {
-          .homepage-bg {
-            background-position: center;
-          }
           .logo-wrap {
             top: calc(env(safe-area-inset-top, 0px) + 24px);
             left: calc(env(safe-area-inset-left, 0px) + 24px);
           }
           .cta-wrap {
             top: 30%;
-            bottom: auto;
           }
         }
 
@@ -82,6 +90,7 @@ export default function Home() {
           }
         }
 
+        /* ===== Button styling (UNCHANGED) ===== */
         .lets-learn-btn {
           position: relative;
           width: 100%;
@@ -124,23 +133,13 @@ export default function Home() {
         }
 
         @keyframes sparkleRotate {
-          0% {
-            transform: rotate(0deg) scale(1);
-          }
-          50% {
-            transform: rotate(180deg) scale(1.3);
-          }
-          100% {
-            transform: rotate(360deg) scale(1);
-          }
+          0% { transform: rotate(0deg) scale(1); }
+          50% { transform: rotate(180deg) scale(1.3); }
+          100% { transform: rotate(360deg) scale(1); }
         }
 
         .lets-learn-btn:hover {
           transform: scale(1.06) translateY(-3px);
-          box-shadow: 0 20px 50px rgba(255, 105, 180, 0.6),
-            0 0 0 7px rgba(255, 255, 255, 0.9),
-            0 0 40px rgba(255, 105, 180, 0.5),
-            inset 0 -4px 0 rgba(0, 0, 0, 0.15);
         }
 
         .lets-learn-btn:active {
@@ -148,15 +147,9 @@ export default function Home() {
         }
 
         @keyframes gradientShift {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
 
         @media (max-width: 768px) {
