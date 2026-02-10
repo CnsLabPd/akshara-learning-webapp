@@ -5,11 +5,10 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <main className="min-h-[100svh] w-full relative overflow-hidden bg-[#0f2a44]">
-      {/* Background layer 2: main image */}
+      {/* Background layer */}
       <div
         className="homepage-bg absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "url('/homepage-bg_test.png')",
           backgroundRepeat: 'no-repeat',
           maskImage:
             'linear-gradient(to top, rgba(165, 226, 23, 0) 0%, rgb(13, 207, 233) 100%)',
@@ -18,10 +17,10 @@ export default function Home() {
         }}
       />
 
-      {/* Optional very light dark overlay for readability */}
+      {/* Optional very light dark overlay */}
       <div className="absolute inset-0 bg-black/10 z-[5] pointer-events-none" />
 
-      {/* Neurogati Logo - Top Left */}
+      {/* Neurogati Logo */}
       <div className="logo-wrap absolute z-50">
         <div className="bg-black/80 rounded-xl px-3 py-2 md:px-4 md:py-2 flex items-center gap-2 md:gap-3 backdrop-blur-sm">
           <img
@@ -35,7 +34,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* LET'S LEARN BUTTON */}
+      {/* CTA BUTTON */}
       <div className="cta-wrap absolute inset-x-0 flex justify-center px-4 z-40">
         <Link href="/signup" className="w-full max-w-[520px] flex justify-center">
           <button className="lets-learn-btn w-full">
@@ -46,24 +45,14 @@ export default function Home() {
       </div>
 
       <style jsx>{`
-        /* ===== Background handling ===== */
-
-        /* Mobile FIRST: show full image, no cropping */
+        /* 📱 Mobile FIRST */
         .homepage-bg {
-          background-size: contain;
-          background-position: top center;
-          background-color: #0f2a44; /* fills empty space */
+          background-image: url('/homepage-bg_mobile.png');
+          background-size: cover;
+          background-position: center top;
         }
 
-        /* Tablet & Desktop: fill screen nicely */
-        @media (min-width: 768px) {
-          .homepage-bg {
-            background-size: cover;
-            background-position: center;
-          }
-        }
-
-        /* ===== Safe area support (iOS notch) ===== */
+        /* Safe area */
         .logo-wrap {
           top: calc(env(safe-area-inset-top, 0px) + 12px);
           left: calc(env(safe-area-inset-left, 0px) + 12px);
@@ -71,14 +60,20 @@ export default function Home() {
 
         .cta-wrap {
           top: 32%;
-          bottom: auto;
         }
 
+        /* 💻 Tablet & Desktop */
         @media (min-width: 768px) {
+          .homepage-bg {
+            background-image: url('/homepage-bg_test.png');
+            background-position: center;
+          }
+
           .logo-wrap {
             top: calc(env(safe-area-inset-top, 0px) + 24px);
             left: calc(env(safe-area-inset-left, 0px) + 24px);
           }
+
           .cta-wrap {
             top: 30%;
           }
@@ -90,7 +85,6 @@ export default function Home() {
           }
         }
 
-        /* ===== Button styling (UNCHANGED) ===== */
         .lets-learn-btn {
           position: relative;
           width: 100%;
@@ -129,7 +123,6 @@ export default function Home() {
         .btn-sparkle {
           animation: sparkleRotate 2s linear infinite;
           font-size: 1.5rem;
-          flex-shrink: 0;
         }
 
         @keyframes sparkleRotate {
@@ -140,10 +133,6 @@ export default function Home() {
 
         .lets-learn-btn:hover {
           transform: scale(1.06) translateY(-3px);
-        }
-
-        .lets-learn-btn:active {
-          transform: scale(1.03) translateY(-1px);
         }
 
         @keyframes gradientShift {
