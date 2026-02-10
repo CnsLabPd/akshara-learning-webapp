@@ -58,7 +58,8 @@ export default function Home() {
         }
 
         .cta-wrap {
-          bottom: calc(env(safe-area-inset-bottom, 0px) + 40px);
+          top: 32%;
+          bottom: auto;
         }
 
         @media (min-width: 768px) {
