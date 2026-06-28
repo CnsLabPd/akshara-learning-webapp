@@ -30,6 +30,8 @@ export default function MazeGame({ size = 10, difficulty = 'easy', onComplete }:
   const [startPos] = useState({x: 0, y: 0});
   const [endPos, setEndPos] = useState({x: size - 1, y: size - 1});
   const [cellSize, setCellSize] = useState(40);
+  const [isKeyboardMode, setIsKeyboardMode] = useState(false);
+  const [keyboardPos, setKeyboardPos] = useState<{x: number, y: number} | null>(null);
 
   // Generate maze using recursive backtracking
   const generateMaze = useCallback(() => {
@@ -169,7 +171,7 @@ export default function MazeGame({ size = 10, difficulty = 'easy', onComplete }:
 
     // Draw path
     if (path.length > 0) {
-      ctx.strokeStyle = '#2196F3';
+      ctx.strokeStyle = isKeyboardMode ? '#9C27B0' : '#2196F3';
       ctx.lineWidth = 4;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -182,7 +184,21 @@ export default function MazeGame({ size = 10, difficulty = 'easy', onComplete }:
       }
       ctx.stroke();
     }
-  }, [maze, path, cellSize, startPos, endPos]);
+
+    // Draw current position indicator for keyboard mode
+    if (isKeyboardMode && keyboardPos) {
+      ctx.fillStyle = '#9C27B0';
+      ctx.beginPath();
+      ctx.arc(
+        keyboardPos.x * cellSize + cellSize / 2,
+        keyboardPos.y * cellSize + cellSize / 2,
+        cellSize / 6,
+        0,
+        Math.PI * 2
+      );
+      ctx.fill();
+    }
+  }, [maze, path, cellSize, startPos, endPos, isKeyboardMode, keyboardPos]);
 
   // Check if move is valid (no wall crossing)
   const canMove = (from: {x: number, y: number}, to: {x: number, y: number}) => {
@@ -278,17 +294,104 @@ export default function MazeGame({ size = 10, difficulty = 'easy', onComplete }:
     setCurrentPos(null);
     setIsComplete(false);
     setIsDrawing(false);
+    setIsKeyboardMode(false);
+    setKeyboardPos(null);
   };
+
+  // Start keyboard mode
+  const startKeyboardMode = () => {
+    if (!isComplete) {
+      setIsKeyboardMode(true);
+      setKeyboardPos(startPos);
+      setPath([startPos]);
+      setCurrentPos(startPos);
+      setIsDrawing(false);
+    }
+  };
+
+  // Handle keyboard navigation
+  const handleKeyPress = useCallback((e: KeyboardEvent) => {
+    if (!isKeyboardMode || isComplete || !keyboardPos) return;
+
+    let newPos: {x: number, y: number} | null = null;
+
+    switch(e.key) {
+      case 'ArrowUp':
+      case 'w':
+      case 'W':
+        newPos = {x: keyboardPos.x, y: keyboardPos.y - 1};
+        break;
+      case 'ArrowDown':
+      case 's':
+      case 'S':
+        newPos = {x: keyboardPos.x, y: keyboardPos.y + 1};
+        break;
+      case 'ArrowLeft':
+      case 'a':
+      case 'A':
+        newPos = {x: keyboardPos.x - 1, y: keyboardPos.y};
+        break;
+      case 'ArrowRight':
+      case 'd':
+      case 'D':
+        newPos = {x: keyboardPos.x + 1, y: keyboardPos.y};
+        break;
+      case 'Escape':
+        resetMaze();
+        return;
+      case ' ':
+      case 'Enter':
+        if (path.length === 0) {
+          startKeyboardMode();
+        }
+        return;
+      default:
+        return;
+    }
+
+    if (newPos && canMove(keyboardPos, newPos)) {
+      // Check if we're backtracking
+      const prevIndex = path.findIndex(p => p.x === newPos.x && p.y === newPos.y);
+      if (prevIndex !== -1) {
+        // Backtracking - remove path after this point
+        setPath(path.slice(0, prevIndex + 1));
+      } else {
+        // Moving forward
+        setPath([...path, newPos]);
+      }
+      setKeyboardPos(newPos);
+      setCurrentPos(newPos);
+
+      // Check if reached the end
+      if (newPos.x === endPos.x && newPos.y === endPos.y) {
+        setIsComplete(true);
+        setIsKeyboardMode(false);
+        if (onComplete) {
+          setTimeout(onComplete, 500);
+        }
+      }
+    }
+
+    e.preventDefault();
+  }, [isKeyboardMode, keyboardPos, path, canMove, endPos, onComplete, startPos, resetMaze, startKeyboardMode]);
 
   // Initialize maze on mount
   useEffect(() => {
     generateMaze();
   }, [generateMaze]);
 
+  // Add keyboard event listener
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleKeyPress]);
+
   // Draw whenever maze or path changes
   useEffect(() => {
     drawMaze();
-  }, [drawMaze]);
+  }, [drawMaze, isKeyboardMode, keyboardPos]);
 
   // Set cell size based on screen size
   useEffect(() => {
@@ -308,7 +411,11 @@ export default function MazeGame({ size = 10, difficulty = 'easy', onComplete }:
     <div className="flex flex-col items-center p-4">
       <div className="mb-4 text-center">
         <h2 className="text-2xl font-bold text-[#5D4037] mb-2">Maze Puzzle</h2>
-        <p className="text-[#8D6E63]">Draw a path from S (Start) to E (End) without lifting your finger!</p>
+        <p className="text-[#8D6E63] mb-2">Draw a path from S (Start) to E (End) without lifting your finger!</p>
+        <div className="flex justify-center gap-4 text-sm">
+          <span className="text-[#9C27B0] font-semibold">🎮 Keyboard: Arrow Keys or WASD</span>
+          <span className="text-[#2196F3] font-semibold">🖱️ Mouse: Click & Drag</span>
+        </div>
       </div>
 
       <div className="relative">
@@ -337,19 +444,35 @@ export default function MazeGame({ size = 10, difficulty = 'easy', onComplete }:
         )}
       </div>
 
-      <div className="mt-4 flex gap-3">
-        <button
-          onClick={resetMaze}
-          className="px-6 py-2 bg-amber-500 text-white rounded-lg font-bold hover:bg-amber-600 transition-colors"
-        >
-          Clear Path
-        </button>
-        <button
-          onClick={generateMaze}
-          className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition-colors"
-        >
-          New Maze
-        </button>
+      <div className="mt-4 flex flex-col items-center gap-3">
+        <div className="flex gap-3">
+          <button
+            onClick={resetMaze}
+            className="px-6 py-2 bg-amber-500 text-white rounded-lg font-bold hover:bg-amber-600 transition-colors"
+          >
+            Clear Path
+          </button>
+          <button
+            onClick={generateMaze}
+            className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition-colors"
+          >
+            New Maze
+          </button>
+          {!isKeyboardMode && !isComplete && path.length === 0 && (
+            <button
+              onClick={startKeyboardMode}
+              className="px-6 py-2 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 transition-colors"
+            >
+              🎮 Start with Keyboard
+            </button>
+          )}
+        </div>
+        {isKeyboardMode && (
+          <div className="text-center p-2 bg-purple-100 rounded-lg">
+            <p className="text-purple-700 font-semibold text-sm">🎮 Keyboard Mode Active</p>
+            <p className="text-purple-600 text-xs">Use Arrow Keys or WASD to move • ESC to reset</p>
+          </div>
+        )}
       </div>
     </div>
   );
