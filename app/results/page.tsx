@@ -30,10 +30,7 @@ export default function ResultsPage() {
 
   const handleCorrectedTest = () => {
     if (results && results.wrongAnswers.length > 0) {
-      if (results.type === 'reading') {
-        localStorage.setItem('correctedTestLetters', JSON.stringify(results.wrongAnswers));
-        router.push('/reading/corrected-test');
-      } else if (results.subtype === 'numbers') {
+      if (results.subtype === 'numbers') {
         localStorage.setItem('correctedTestNumbers', JSON.stringify(results.wrongAnswers));
         router.push('/corrected-test/numbers');
       } else {
@@ -152,13 +149,7 @@ export default function ResultsPage() {
             )}
 
             <Link href={
-              results.type === 'reading'
-                ? results.subtype === 'numbers'
-                  ? '/reading/test/numbers'
-                  : results.letterType === 'learn'
-                  ? '/reading/learn/test'
-                  : '/reading/test'
-                : results.subtype === 'numbers'
+              results.subtype === 'numbers'
                 ? '/test/numbers'
                 : results.letterType === 'small'
                 ? '/test/small'

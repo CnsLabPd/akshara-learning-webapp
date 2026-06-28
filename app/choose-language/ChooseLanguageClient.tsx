@@ -221,14 +221,14 @@ export default function ChooseLanguageClient() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {/* Writing Section */}
+            <div className="flex justify-center">
+              {/* Writing Section Only - Centered */}
               <div
                 onClick={() => setSelectedSection('writing')}
-                className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
+                className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-8 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer max-w-md w-full"
               >
                 <div className="text-6xl mb-4 text-center">✍️</div>
-                <h3 className="text-2xl font-extrabold mb-4 text-center text-[#9C27B0]">Writing</h3>
+                <h3 className="text-2xl font-extrabold mb-4 text-center text-[#9C27B0]">Writing Practice</h3>
                 <ul className="text-base space-y-2 text-[#5D4037] font-semibold">
                   <li className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-[#9C27B0] rounded-full"></span>
@@ -248,36 +248,9 @@ export default function ChooseLanguageClient() {
                   </li>
                 </ul>
               </div>
-
-              {/* Reading Section */}
-              <div
-                onClick={() => setSelectedSection('reading')}
-                className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
-              >
-                <div className="text-6xl mb-4 text-center">🎤</div>
-                <h3 className="text-2xl font-extrabold mb-4 text-center text-[#E91E63]">Reading</h3>
-                <ul className="text-base space-y-2 text-[#5D4037] font-semibold">
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#E91E63] rounded-full"></span>
-                    Practice pronunciation
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#E91E63] rounded-full"></span>
-                    Voice recognition
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#E91E63] rounded-full"></span>
-                    Listen and repeat
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#E91E63] rounded-full"></span>
-                    Improve reading skills
-                  </li>
-                </ul>
-              </div>
             </div>
           </div>
-        ) : (selectedSection === 'writing' || selectedSection === 'reading') && !selectedSubsection ? (
+        ) : selectedSection === 'writing' && !selectedSubsection ? (
           /* Subsection Selection */
           <div>
             <div className="text-center mb-6">
@@ -287,8 +260,7 @@ export default function ChooseLanguageClient() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-              {selectedSection === 'writing' ? (
-                selectedLanguage === 'ta' ? (
+              {selectedLanguage === 'ta' ? (
                   <>
                     <div
                       onClick={() => setSelectedSubsection('capital')}
@@ -334,37 +306,6 @@ export default function ChooseLanguageClient() {
                       <p className="text-center text-sm font-bold text-white/80">0 to 9</p>
                     </div>
                   </>
-                )
-              ) : (
-                selectedLanguage === 'ta' ? (
-                  <>
-                    <div
-                      onClick={() => setSelectedSubsection('learn')}
-                      className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
-                    >
-                      <div className="text-5xl mb-3 text-center">🎓</div>
-                      <h3 className="text-xl font-extrabold mb-2 text-center text-[#9C3877]">Learn Letters</h3>
-                      <p className="text-center text-sm font-bold text-[#8D6E63]">Interactive Learning</p>
-                    </div>
-                    <div
-                      onClick={() => setSelectedSubsection('alphabets')}
-                      className="group bg-[#FFF9F0] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15),0_0_0_6px_rgba(255,255,255,0.4)] border-4 border-[#EADDCA] p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
-                    >
-                      <div className="text-5xl mb-3 text-center font-bold text-[#9C27B0]">அ</div>
-                      <h3 className="text-xl font-extrabold mb-2 text-center text-[#9C3877]">Tamil Letters</h3>
-                      <p className="text-center text-sm font-bold text-[#8D6E63]">Vowels & Consonants</p>
-                    </div>
-                  </>
-                ) : (
-                  <div
-                    onClick={() => setSelectedSubsection('alphabets')}
-                    className="group bg-gradient-to-br from-[#E91E63] to-[#C2185B] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15)] border-4 border-white/30 p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer"
-                  >
-                    <div className="text-5xl mb-3 text-center font-bold text-white">ABC</div>
-                    <h3 className="text-xl font-extrabold mb-2 text-center text-white">Alphabets</h3>
-                    <p className="text-center text-sm font-bold text-white/80">A to Z</p>
-                  </div>
-                )
               )}
             </div>
           </div>
@@ -380,17 +321,11 @@ export default function ChooseLanguageClient() {
             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               {/* Practice Mode */}
               <Link href={
-                selectedSection === 'writing'
-                  ? selectedSubsection === 'capital'
-                    ? `/practice?lang=${selectedLanguage}`
-                    : selectedSubsection === 'small'
-                    ? `/practice/small?lang=${selectedLanguage}`
-                    : `/practice/numbers?lang=${selectedLanguage}`
-                  : selectedLanguage === 'ta'
-                    ? selectedSubsection === 'learn'
-                      ? `/reading/learn/practice?lang=${selectedLanguage}`
-                      : `/reading/practice?lang=${selectedLanguage}`
-                    : `/reading/practice?lang=${selectedLanguage}`
+                selectedSubsection === 'capital'
+                  ? `/practice?lang=${selectedLanguage}`
+                  : selectedSubsection === 'small'
+                  ? `/practice/small?lang=${selectedLanguage}`
+                  : `/practice/numbers?lang=${selectedLanguage}`
               }>
                 <div className="group bg-gradient-to-br from-[#4CAF50] to-[#2E7D32] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15)] border-4 border-white/30 p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer">
                   <div className="text-6xl mb-4 text-center">✏️</div>
@@ -418,17 +353,11 @@ export default function ChooseLanguageClient() {
 
               {/* Test Mode */}
               <Link href={
-                selectedSection === 'writing'
-                  ? selectedSubsection === 'capital'
-                    ? `/test?lang=${selectedLanguage}`
-                    : selectedSubsection === 'small'
-                    ? `/test/small?lang=${selectedLanguage}`
-                    : `/test/numbers?lang=${selectedLanguage}`
-                  : selectedLanguage === 'ta'
-                    ? selectedSubsection === 'learn'
-                      ? `/reading/learn/test?lang=${selectedLanguage}`
-                      : `/reading/test?lang=${selectedLanguage}`
-                    : `/reading/test?lang=${selectedLanguage}`
+                selectedSubsection === 'capital'
+                  ? `/test?lang=${selectedLanguage}`
+                  : selectedSubsection === 'small'
+                  ? `/test/small?lang=${selectedLanguage}`
+                  : `/test/numbers?lang=${selectedLanguage}`
               }>
                 <div className="group bg-gradient-to-br from-[#FF9800] to-[#F57C00] rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.15)] border-4 border-white/30 p-6 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 cursor-pointer">
                   <div className="text-6xl mb-4 text-center">📝</div>
