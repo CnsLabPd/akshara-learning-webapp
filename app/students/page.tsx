@@ -280,16 +280,9 @@ export default function StudentsPage() {
             <ActionCard
               href="/choose-language?section=writing"
               icon="✍️"
-              title="Writing"
-              subtitle="Learn to write letters"
+              title="Writing Practice"
+              subtitle="Learn to write letters with AI"
               gradient="bg-gradient-to-br from-[#9C27B0] via-[#AB47BC] to-[#7B1FA2]"
-            />
-            <ActionCard
-              href="/choose-language?section=reading"
-              icon="📖"
-              title="Reading"
-              subtitle="Learn to read letters"
-              gradient="bg-gradient-to-br from-[#E91E63] via-[#EC407A] to-[#C2185B]"
             />
           </div>
         </div>
