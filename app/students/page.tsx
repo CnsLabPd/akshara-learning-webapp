@@ -276,13 +276,27 @@ export default function StudentsPage() {
             <span className="text-3xl">🚀</span> Continue Learning
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <ActionCard
               href="/choose-language?section=writing"
               icon="✍️"
               title="Writing Practice"
               subtitle="Learn to write letters with AI"
               gradient="bg-gradient-to-br from-[#9C27B0] via-[#AB47BC] to-[#7B1FA2]"
+            />
+            <ActionCard
+              href="/puzzles"
+              icon="🧩"
+              title="Puzzles"
+              subtitle="Fun logic and maze puzzles"
+              gradient="bg-gradient-to-br from-[#00BCD4] via-[#26C6DA] to-[#0097A7]"
+            />
+            <ActionCard
+              href="/arithmetic"
+              icon="🔢"
+              title="Arithmetic"
+              subtitle="Coming Soon!"
+              gradient="bg-gradient-to-br from-[#FF9800] via-[#FFB74D] to-[#F57C00]"
             />
           </div>
         </div>
